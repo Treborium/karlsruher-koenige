@@ -11,8 +11,9 @@
   align-items: center;
   justify-content: center;
   height: 30vh;
-  padding: 1vh 10vw;
-  background-color: #3f72af;
+  padding: 1vh 5vw;
+  background-color: #CC6666;
+  box-shadow: 0 2px 5px #AAA;
 }
 
 .heading {
@@ -22,5 +23,5 @@
 
 .content {
   height: 70vh;
-  padding: 1vh 10vw;
+  padding: 1vh 7vw;
 }
