@@ -1,0 +1,21 @@
+.songContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  height: 70vh
+}
+
+.song {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  background: #dbe2ef;
+  margin: 2vh 0;
+  padding: 2vh 3vw;
+  border-radius: 5px;
+}
+
+.songTitle {
+  width: 50vw;
+  color: #112d4e
+}
