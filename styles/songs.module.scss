@@ -1,10 +1,11 @@
 @use 'colors';
+@use 'spacing';
 
 .songContainer {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  height: 70vh;
+  height: spacing.$content-height;
 }
 
 .song {
