@@ -25,5 +25,21 @@ export function getSortedPostsData(): Post[] {
       title: 'some title',
       content: 'some content',
     },
+    {
+      title: 'some title',
+      content: 'some content',
+    },
+    {
+      title: 'some title',
+      content: 'some content',
+    },
+    {
+      title: 'some title',
+      content: 'some content',
+    },
+    {
+      title: 'some title',
+      content: 'some content',
+    },
   ]
 }

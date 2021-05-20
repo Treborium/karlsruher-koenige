@@ -3,6 +3,7 @@
   flex-direction: column;
   justify-content: flex-start;
   height: 70vh;
+  padding-bottom: 3vh;
 }
 
 .post{

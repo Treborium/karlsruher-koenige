@@ -1,4 +1,5 @@
 import styles from '../styles/layout.module.css';
+import Menu from './menu';
 
 export interface LayoutProps {
   heading: string;
@@ -16,6 +17,7 @@ export default function Layout(props: LayoutProps) {
       <div className={styles.content}>
         {props.children}
       </div>
+      <Menu />
     </div>
   );
 }
