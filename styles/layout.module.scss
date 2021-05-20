@@ -4,7 +4,7 @@
 .flexContainer {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  min-height: 100vh;
   width: 100vw;
   background-color: colors.$primary-color;
 }
@@ -25,6 +25,7 @@
 }
 
 .content {
-  height: spacing.$content-height;
+  min-height: spacing.$content-height;
   padding: 1vh 7vw;
+  margin-bottom: spacing.$menu-height;
 }

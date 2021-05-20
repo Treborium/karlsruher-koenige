@@ -1,4 +1,5 @@
 @use 'colors';
+@use 'spacing';
 
 .container {
   display: flex;
@@ -10,7 +11,7 @@
 	z-index: 1000;
   background-color: colors.$accent-color;
   width: 100vw;
-  height: 6vh;
+  height: spacing.$menu-height;
 }
 
 .menuItem {
