@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "prettier": "prettier --write \"**/*.{ts,tx,js,jsx,json,md}\""
+    "prettier": "prettier --write \"**/*.{ts,tx,js,jsx,json,md}\"",
+    "prepare": "husky install"
   },
   "dependencies": {
     "date-fns": "^2.11.1",
@@ -23,6 +24,7 @@
   "devDependencies": {
     "@types/react": "^17.0.6",
     "husky": "^6.0.0",
+    "lint-staged": "^11.0.0",
     "prettier": "^2.3.0",
     "typescript": "^4.2.4"
   },
@@ -33,5 +35,8 @@
     "bracketSpacing": true,
     "arrowParens": "always",
     "printWidth": 80
+  },
+  "lint-staged": {
+    "*.{json,ts,tsx,jsx,js,css,md}": "prettier --write"
   }
 }
