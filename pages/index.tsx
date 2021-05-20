@@ -17,6 +17,7 @@ export default function Home({ allPostsData }: HomeProps) {
                 <div className={styles.postTitle}>
                   {title}
                 </div>
+                <div className={styles.divider} />
                 <div className={styles.postContent}>
                   {content}
                 </div>
