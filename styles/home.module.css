@@ -19,13 +19,14 @@
 .postTitle {
   color: #2A3A4A;
   font-size: 1.2rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 } 
 
 .postContent {
   color: #3A4A5A;
   text-overflow: ellipsis;
-
-  /* Required for text-overflow to do anything */
   white-space: nowrap;
   overflow: hidden;
 }

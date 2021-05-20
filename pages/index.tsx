@@ -11,15 +11,17 @@ export default function Home({ allPostsData }: HomeProps) {
     <Layout heading='Neuigkeiten'>
       <div className={styles.postContainer}>
         {
-          allPostsData.map(({title, content}) => (
-            <div className={styles.post}>
-              <div className={styles.postTitle}>
-                {title}
+          allPostsData.map(({id, title, content}) => (
+            <a href={`posts/${id}`}>
+              <div className={styles.post}>
+                <div className={styles.postTitle}>
+                  {title}
+                </div>
+                <div className={styles.postContent}>
+                  {content}
+                </div>
               </div>
-              <div className={styles.postContent}>
-                {content}
-              </div>
-            </div>
+              </a>
           ))
         }
       </div>
