@@ -1,4 +1,4 @@
-import styles from '../styles/menu.module.css';
+import styles from '../styles/menu.module.scss';
 import { Home, Music, Info, Coffee } from 'react-feather';
 
 export default function Menu() {

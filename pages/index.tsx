@@ -1,6 +1,6 @@
 import Layout from '../components/layout';
 import { getSortedPostsData, Post } from '../lib/posts';
-import styles from '../styles/home.module.css';
+import styles from '../styles/home.module.scss';
 
 interface HomeProps {
   allPostsData: Post[];
@@ -21,7 +21,7 @@ export default function Home({ allPostsData }: HomeProps) {
                   {content}
                 </div>
               </div>
-              </a>
+            </a>
           ))
         }
       </div>

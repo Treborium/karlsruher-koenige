@@ -1,3 +1,5 @@
+@use 'colors';
+
 .postContainer {
   display: flex;
   flex-direction: column;
@@ -9,15 +11,15 @@
 .post{
   display: flex;
   flex-direction: column;
-  background: #EFEFEF;
+  background: colors.$secondary-color;
   margin: 2vh 0;
   padding: 1vh 3vw;
   border-radius: 10px;
-  box-shadow: 2px 2px 10px #AAA;
+  box-shadow: 2px 2px 10px colors.$shadow-color;
 }
 
 .postTitle {
-  color: #2A3A4A;
+  color: colors.$primary-text-color;
   font-size: 1.2rem;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -25,7 +27,7 @@
 } 
 
 .postContent {
-  color: #3A4A5A;
+  color: colors.$secondary-text-color;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;

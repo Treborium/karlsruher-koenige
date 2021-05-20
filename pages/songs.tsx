@@ -1,5 +1,5 @@
 import Layout from '../components/layout';
-import styles from '../styles/songs.module.css';
+import styles from '../styles/songs.module.scss';
 import { getSongs } from '../lib/songs';
 import { ExternalLink } from 'react-feather';
 
