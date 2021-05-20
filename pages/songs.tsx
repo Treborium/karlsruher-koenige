@@ -1,20 +1,22 @@
 import Layout from '../components/layout';
 import styles from '../styles/songs.module.scss';
 import { getSongs } from '../lib/songs';
-import { ExternalLink } from 'react-feather';
+import { FileText } from 'react-feather';
 
 
 export default function Songs() {
   return (
     <Layout heading='Königliche Songtexte'>
       <div className={styles.songContainer}>
-        {getSongs().map(title => (
-          <div className={styles.song}>
-            <div className={styles.songTitle}>
-              {title}
+        {getSongs().map(({id, title}) => (
+          <a href={`song/${id}`}>
+            <div className={styles.song}>
+              <div className={styles.songTitle}>
+                {title}
+              </div>
+              <FileText color='#112d4e'/>
             </div>
-            <ExternalLink color='#112d4e'/>
-          </div>
+          </a>
         ))}
       </div>
     </Layout>

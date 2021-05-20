@@ -1,9 +1,15 @@
-export function getSongs(): String[] {
+export interface Song {
+  id: number;
+  title: string;
+} 
+
+export function getSongs(): Song[] {
   return [
-    'Königslied',
-    'Kein Bier auf Hawaii',
-    'Song 3',
-    'Sonst noch was',
-    'etc.',
+    {id: 1, title: 'Königslied'},
+    {id: 2, title: 'Schlachtruf'},
+    {id: 3, title: 'Kein Bier auf Hawaii'},
+    {id: 4, title: 'Song 3'},
+    {id: 5, title: 'Sonst noch was'},
+    {id: 6, title: 'etc.'},
   ];
 }
