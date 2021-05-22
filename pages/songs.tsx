@@ -8,7 +8,7 @@ export default function Songs() {
     <Layout heading="Königliche Songtexte">
       <div className={styles.songContainer}>
         {getSongs().map(({ id, title }) => (
-          <a href={`songs/${id}`}>
+          <a href={`song/${id}`}>
             <div className={styles.song}>
               <div className={styles.songTitle}>{title}</div>
               <FileText color="#112d4e" />
