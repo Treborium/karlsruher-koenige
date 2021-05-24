@@ -21,4 +21,7 @@
 .songTitle {
   width: 50vw;
   color: colors.$primary-text-color;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }

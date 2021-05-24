@@ -21,6 +21,7 @@
 .postTitle {
   color: colors.$primary-text-color;
   font-size: 1rem;
+  // Move ellipsis overflow into own subclass and inherit where needed
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;

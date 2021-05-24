@@ -1,6 +1,8 @@
 @use 'colors';
 @use 'spacing';
 
+$button-active-color: #CCAAAA;
+
 .container {
   display: flex;
   flex-direction: column;
@@ -14,8 +16,6 @@
   font-size: 5rem;
   color: colors.$primary-text-color;
 }
-
-$button-active-color: #CCAAAA;
 
 .button {
   font-size: 3rem;
