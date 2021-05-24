@@ -1,12 +1,42 @@
-import { useRouter } from 'next/router';
+import { GetStaticPaths, GetStaticProps } from 'next';
+import Layout from '../../components/layout';
+import {
+  getAllStaticFileIds,
+  getStaticFileData,
+  getSongsDirectory,
+} from '../../lib/static-file';
 
-const Song = () => {
-  const router = useRouter();
-  const { id } = router.query;
+export default function Song({
+  songData,
+}: {
+  songData: {
+    title: string;
+    content: string;
+  };
+}) {
+  return (
+    <Layout heading={songData.title}>
+      <p>{songData.content}</p>
+    </Layout>
+  );
+}
 
-  console.log(router.query);
-
-  return <h1>Site "{id}" under construction. Please come back later!</h1>;
+export const getStaticPaths: GetStaticPaths = async () => {
+  const paths = getAllStaticFileIds(getSongsDirectory());
+  return {
+    paths,
+    fallback: false,
+  };
 };
 
-export default Song;
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+  const songData = await getStaticFileData(
+    params.id as string,
+    getSongsDirectory()
+  );
+  return {
+    props: {
+      songData,
+    },
+  };
+};

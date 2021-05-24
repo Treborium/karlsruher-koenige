@@ -1,9 +1,13 @@
 import Layout from '../components/layout';
-import { getSortedPostsData, Post } from '../lib/posts';
+import {
+  getPostsDirectory,
+  getSortedData,
+  StaticFile,
+} from '../lib/static-file';
 import styles from '../styles/home.module.scss';
 
 interface HomeProps {
-  posts: Post[];
+  posts: StaticFile[];
 }
 
 export default function Home({ posts }: HomeProps) {
@@ -25,7 +29,7 @@ export default function Home({ posts }: HomeProps) {
 }
 
 export async function getStaticProps() {
-  const posts = await getSortedPostsData();
+  const posts = await getSortedData(getPostsDirectory());
   return {
     props: {
       posts,

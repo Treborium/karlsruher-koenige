@@ -1,6 +1,10 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
 import Layout from '../../components/layout';
-import { getAllPostIds, getPostData } from '../../lib/posts';
+import {
+  getAllStaticFileIds,
+  getStaticFileData,
+  getPostsDirectory,
+} from '../../lib/static-file';
 
 export default function Post({
   postData,
@@ -18,7 +22,7 @@ export default function Post({
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const paths = getAllPostIds();
+  const paths = getAllStaticFileIds(getPostsDirectory());
   return {
     paths,
     fallback: false,
@@ -26,7 +30,10 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const postData = await getPostData(params.id as string);
+  const postData = await getStaticFileData(
+    params.id as string,
+    getPostsDirectory()
+  );
   return {
     props: {
       postData,
