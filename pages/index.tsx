@@ -3,15 +3,15 @@ import { getSortedPostsData, Post } from '../lib/posts';
 import styles from '../styles/home.module.scss';
 
 interface HomeProps {
-  allPostsData: Post[];
+  posts: Post[];
 }
 
-export default function Home({ allPostsData }: HomeProps) {
+export default function Home({ posts }: HomeProps) {
   return (
     <Layout heading="Neuigkeiten">
       <div className={styles.postContainer}>
-        {allPostsData.map(({ id, title, content }) => (
-          <a href={`post/${id}`}>
+        {posts.map(({ title, content }) => (
+          <a href={`post/${title}`} key={title}>
             <div className={styles.post}>
               <div className={styles.postTitle}>{title}</div>
               <div className={styles.divider} />
@@ -25,10 +25,10 @@ export default function Home({ allPostsData }: HomeProps) {
 }
 
 export async function getStaticProps() {
-  const allPostsData = getSortedPostsData();
+  const posts = await getSortedPostsData();
   return {
     props: {
-      allPostsData,
+      posts,
     },
   };
 }

@@ -1,8 +1,35 @@
-import { useRouter } from 'next/router';
+import { GetStaticPaths, GetStaticProps } from 'next';
+import Layout from '../../components/layout';
+import { getAllPostIds, getPostData } from '../../lib/posts';
 
-export default function Post() {
-  const router = useRouter();
-  const { id } = router.query;
-
-  return <h1>This is post #{id}</h1>;
+export default function Post({
+  postData,
+}: {
+  postData: {
+    title: string;
+    content: string;
+  };
+}) {
+  return (
+    <Layout heading={postData.title}>
+      <p>{postData.content}</p>
+    </Layout>
+  );
 }
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const paths = getAllPostIds();
+  return {
+    paths,
+    fallback: false,
+  };
+};
+
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+  const postData = await getPostData(params.id as string);
+  return {
+    props: {
+      postData,
+    },
+  };
+};
