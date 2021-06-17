@@ -1,10 +1,12 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
 import Layout from '../../components/layout';
 import {
-  getAllStaticFileIds,
-  getStaticFileData,
-  getPostsDirectory,
-} from '../../lib/static-file';
+  getObject,
+  getStaticPathsForPosts,
+  initS3Client,
+  Message,
+} from '../../lib/posts';
+import { createHash } from 'crypto';
 
 export default function Post({
   postData,
@@ -22,21 +24,21 @@ export default function Post({
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const paths = getAllStaticFileIds(getPostsDirectory());
   return {
-    paths,
+    paths: await getStaticPathsForPosts(),
     fallback: false,
   };
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const postData = await getStaticFileData(
-    params.id as string,
-    getPostsDirectory()
-  );
+  const key = createHash('md5')
+    .update(params.id as string)
+    .digest('hex');
+  const content = await getObject(initS3Client(), key as string);
+  const message: Message = JSON.parse(content);
   return {
     props: {
-      postData,
+      postData: { title: message.subject, content: message.text },
     },
   };
 };
