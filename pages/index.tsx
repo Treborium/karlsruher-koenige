@@ -33,8 +33,8 @@ export default function Home({ posts }: HomeProps) {
       <Grid container direction="column" spacing={2}>
         {posts.map(({ title, content }) => (
           <Grid item>
-            <Card className={classes.card}>
-              <CardActionArea href={`post/${title}`}>
+            <Card>
+              <CardActionArea className={classes.card} href={`post/${title}`}>
                 <CardContent>
                   <Typography variant="body1">{trimToLength(title)}</Typography>
                   <Divider variant="middle" className={classes.divider} />
