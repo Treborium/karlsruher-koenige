@@ -8,8 +8,6 @@ import {
   Typography,
   Button,
   Grid,
-} from '@material-ui/core';
-import {
   Table,
   TableContainer,
   TableHead,
@@ -45,38 +43,16 @@ export default function About() {
         voluptua.
       </p>
 
-      <Accordion>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1a-content"
-          id="panel1a-header"
-        >
-          <Typography>Anmeldung</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Grid container direction="column" alignItems="center" spacing={2}>
-            <Grid item>
-              <Typography>
-                Du hast Interesse den Karlsruher Königen beizutreten und beim
-                Unisport teilzunehmen? Dann melde dich auf der
-                Hochschulsport-Webseite an und lass dich im nächsten Training
-                blicken!
-              </Typography>
-            </Grid>
-            <Grid item>
-              <Button
-                variant="contained"
-                color="primary"
-                size="small"
-                href="https://buchsys.sport.uni-karlsruhe.de/angebote/aktueller_zeitraum/index.html"
-                endIcon={<Launch />}
-              >
-                Anmeldung
-              </Button>
-            </Grid>
-          </Grid>
-        </AccordionDetails>
-      </Accordion>
+      <AccordionWithButton
+        title="Anmeldung"
+        buttonLink="https://buchsys.sport.uni-karlsruhe.de/angebote/aktueller_zeitraum/index.html"
+        buttonText="Anmeldung"
+        icon={<Launch />}
+      >
+        Du hast Interesse den Karlsruher Königen beizutreten und beim Unisport
+        teilzunehmen? Dann melde dich auf der Hochschulsport-Webseite an und
+        lass dich im nächsten Training blicken!
+      </AccordionWithButton>
 
       <Accordion>
         <AccordionSummary
@@ -90,9 +66,14 @@ export default function About() {
           <Grid container direction="column" alignItems="center" spacing={2}>
             <Grid item>
               <TableContainer component={Paper}>
-                <Table aria-label="simple table" size="small">
+                <Table
+                  aria-label="simple table"
+                  size="small"
+                  padding="checkbox"
+                >
                   <TableHead>
                     <TableRow>
+                      {/* TODO: Style head row bold */}
                       <TableCell>Tag</TableCell>
                       <TableCell>Zeit</TableCell>
                       <TableCell>Gruppe</TableCell>
@@ -133,6 +114,7 @@ export default function About() {
         title="Kontakt"
         buttonText="Mail Senden"
         buttonLink="mailto:turnkoenige@gmail.com"
+        icon={<Mail />}
       >
         Falls du Fragen hast oder gerne Kontakt zu uns aufnehmen möchtest,
         erreichst du uns am besten per Mail:
@@ -145,6 +127,7 @@ interface AccordionWithButtonProps {
   title: string;
   buttonText: string;
   buttonLink: string;
+  icon?: JSX.Element;
 }
 
 const AccordionWithButton: FunctionComponent<AccordionWithButtonProps> = ({
@@ -152,6 +135,7 @@ const AccordionWithButton: FunctionComponent<AccordionWithButtonProps> = ({
   buttonText,
   buttonLink,
   children,
+  icon,
 }) => {
   return (
     <Accordion>
@@ -173,7 +157,7 @@ const AccordionWithButton: FunctionComponent<AccordionWithButtonProps> = ({
               color="primary"
               size="small"
               href={buttonLink}
-              startIcon={<Mail />}
+              endIcon={icon}
             >
               {buttonText}
             </Button>
