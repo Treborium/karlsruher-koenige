@@ -11,11 +11,12 @@ export interface LayoutProps {
 
 const useStyles = makeStyles({
   appBar: {
-    flexGrow: 1,
     padding: '2vh 0',
   },
-  title: {
+  content: {
+    minHeight: '100vh',
     flexGrow: 1,
+    padding: '1vh 7vw',
   },
 });
 
@@ -27,13 +28,11 @@ export default function Layout(props: LayoutProps) {
       <AppBar position="static" className={classes.appBar}>
         <Grid container justify="center" alignItems="center">
           <Grid item>
-            <Typography variant="h6" className={classes.title}>
-              {props.heading}
-            </Typography>
+            <Typography variant="h6">{props.heading}</Typography>
           </Grid>
         </Grid>
       </AppBar>
-      <div className={styles.content}>{props.children}</div>
+      <div className={classes.content}>{props.children}</div>
       <Menu />
     </div>
   );
