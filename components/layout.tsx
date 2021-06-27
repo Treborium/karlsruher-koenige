@@ -1,7 +1,6 @@
 import { AppBar, Typography, Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
-import styles from '../styles/layout.module.scss';
 import Menu from './menu';
 
 export interface LayoutProps {
@@ -10,8 +9,13 @@ export interface LayoutProps {
 }
 
 const useStyles = makeStyles({
+  root: {
+    minHeight: '100vh',
+    width: '100vw',
+  },
   appBar: {
     padding: '2vh 0',
+    marginBottom: '3vh',
   },
   content: {
     minHeight: '100vh',
@@ -24,7 +28,7 @@ export default function Layout(props: LayoutProps) {
   const classes = useStyles();
 
   return (
-    <div className={styles.flexContainer}>
+    <Grid container direction="column">
       <AppBar position="static" className={classes.appBar}>
         <Grid container justify="center" alignItems="center">
           <Grid item>
@@ -34,6 +38,6 @@ export default function Layout(props: LayoutProps) {
       </AppBar>
       <div className={classes.content}>{props.children}</div>
       <Menu />
-    </div>
+    </Grid>
   );
 }
