@@ -10,6 +10,8 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "@material-ui/core": "^4.11.4",
+    "@material-ui/icons": "^4.11.2",
     "aws-sdk": "^2.929.0",
     "date-fns": "^2.11.1",
     "error": "^10.4.0",
@@ -28,14 +30,6 @@
     "lint-staged": "^11.0.0",
     "prettier": "^2.3.0",
     "typescript": "^4.2.4"
-  },
-  "prettier": {
-    "trailingComma": "es5",
-    "singleQuote": true,
-    "semi": true,
-    "bracketSpacing": true,
-    "arrowParens": "always",
-    "printWidth": 80
   },
   "lint-staged": {
     "*.{json,ts,tsx,jsx,js,css,md}": "prettier --write"
