@@ -11,6 +11,7 @@ import {
   CardActionArea,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import Head from 'next/head';
 
 interface HomeProps {
   posts: StaticFile[];
@@ -27,27 +28,36 @@ const useStyles = makeStyles({
 
 export default function Home({ posts }: HomeProps) {
   const classes = useStyles();
+  const heading = 'Neuigkeiten';
 
   return (
-    <Layout heading="Neuigkeiten" currentPage="news">
-      <Grid container direction="column" spacing={2}>
-        {posts.map(({ title, content }) => (
-          <Grid item key={title}>
-            <Card>
-              <CardActionArea className={classes.card} href={`post/${title}`}>
-                <CardContent>
-                  <Typography variant="body1">{trimToLength(title)}</Typography>
-                  <Divider variant="middle" className={classes.divider} />
-                  <Typography variant="body2">
-                    {trimToLength(content)}
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
-    </Layout>
+    <>
+      <Head>
+        <title>{heading}</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
+      <Layout heading={heading} currentPage="news">
+        <Grid container direction="column" spacing={2}>
+          {posts.map(({ title, content }) => (
+            <Grid item key={title}>
+              <Card>
+                <CardActionArea className={classes.card} href={`post/${title}`}>
+                  <CardContent>
+                    <Typography variant="body1">
+                      {trimToLength(title)}
+                    </Typography>
+                    <Divider variant="middle" className={classes.divider} />
+                    <Typography variant="body2">
+                      {trimToLength(content)}
+                    </Typography>
+                  </CardContent>
+                </CardActionArea>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      </Layout>
+    </>
   );
 }
 

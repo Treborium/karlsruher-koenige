@@ -1,6 +1,7 @@
 import { Paper, Typography, Grid, Link } from '@material-ui/core';
 import Description from '@material-ui/icons/Description';
 import { makeStyles } from '@material-ui/core/styles';
+import Head from 'next/head';
 
 import Layout from '../components/layout';
 import {
@@ -24,27 +25,33 @@ export default function Songs({ songs }: SongProps) {
   const classes = useStyles();
 
   return (
-    <Layout heading="Königliche Songtexte" currentPage="songs">
-      <Grid container direction="column" spacing={2}>
-        {songs.map(({ title }) => (
-          <Grid item key={title}>
-            <Link href={`song/${title}`} key={title}>
-              <Paper variant="elevation">
-                <Grid
-                  container
-                  justify="space-between"
-                  alignItems="center"
-                  className={classes.paper}
-                >
-                  <Typography>{title}</Typography>
-                  <Description />
-                </Grid>
-              </Paper>
-            </Link>
-          </Grid>
-        ))}
-      </Grid>
-    </Layout>
+    <>
+      <Head>
+        <title>Songs</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
+      <Layout heading="Königliche Songtexte" currentPage="songs">
+        <Grid container direction="column" spacing={2}>
+          {songs.map(({ title }) => (
+            <Grid item key={title}>
+              <Link href={`song/${title}`} key={title}>
+                <Paper variant="elevation">
+                  <Grid
+                    container
+                    justify="space-between"
+                    alignItems="center"
+                    className={classes.paper}
+                  >
+                    <Typography>{title}</Typography>
+                    <Description />
+                  </Grid>
+                </Paper>
+              </Link>
+            </Grid>
+          ))}
+        </Grid>
+      </Layout>
+    </>
   );
 }
 

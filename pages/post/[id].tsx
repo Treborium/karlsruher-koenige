@@ -1,4 +1,5 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
+import Head from 'next/head';
 import Layout from '../../components/layout';
 import {
   getObject,
@@ -17,9 +18,15 @@ export default function Post({
   };
 }) {
   return (
-    <Layout heading={postData.title}>
-      <p>{postData.content}</p>
-    </Layout>
+    <>
+      <Head>
+        <title>{postData.title}</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
+      <Layout heading={postData.title} currentPage="news">
+        <p>{postData.content}</p>
+      </Layout>
+    </>
   );
 }
 
