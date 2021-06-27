@@ -27,7 +27,7 @@ export default function Songs({ songs }: SongProps) {
     <Layout heading="Königliche Songtexte" currentPage="songs">
       <Grid container direction="column" spacing={2}>
         {songs.map(({ title }) => (
-          <Grid item>
+          <Grid item key={title}>
             <Link href={`song/${title}`} key={title}>
               <Paper variant="elevation">
                 <Grid

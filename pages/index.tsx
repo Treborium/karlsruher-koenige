@@ -32,7 +32,7 @@ export default function Home({ posts }: HomeProps) {
     <Layout heading="Neuigkeiten" currentPage="news">
       <Grid container direction="column" spacing={2}>
         {posts.map(({ title, content }) => (
-          <Grid item>
+          <Grid item key={title}>
             <Card>
               <CardActionArea className={classes.card} href={`post/${title}`}>
                 <CardContent>
