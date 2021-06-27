@@ -34,7 +34,7 @@ export default function Songs({ songs }: SongProps) {
         <Grid container direction="column" spacing={2}>
           {songs.map(({ title }) => (
             <Grid item key={title}>
-              <Link href={`song/${title}`} key={title}>
+              <Link href={`song/${title}`} key={title} underline="none">
                 <Paper variant="elevation">
                   <Grid
                     container
