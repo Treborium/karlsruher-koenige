@@ -5,6 +5,7 @@ import Menu from './menu';
 
 export interface LayoutProps {
   heading: string;
+  currentPage: string;
   children?: JSX.Element | JSX.Element[];
 }
 
@@ -37,7 +38,7 @@ export default function Layout(props: LayoutProps) {
         </Grid>
       </AppBar>
       <div className={classes.content}>{props.children}</div>
-      <Menu />
+      <Menu currentPage={props.currentPage} />
     </Grid>
   );
 }

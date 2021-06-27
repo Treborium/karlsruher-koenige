@@ -16,7 +16,7 @@ export default function Beer() {
   const [count, setCount] = useState(0);
 
   return (
-    <Layout heading="Kasten Zähler">
+    <Layout heading="Kasten Zähler" currentPage="beer">
       <Grid
         container
         direction="column"

@@ -24,7 +24,7 @@ export default function Songs({ songs }: SongProps) {
   const classes = useStyles();
 
   return (
-    <Layout heading="Königliche Songtexte">
+    <Layout heading="Königliche Songtexte" currentPage="songs">
       <Grid container direction="column" spacing={2}>
         {songs.map(({ title }) => (
           <Grid item>

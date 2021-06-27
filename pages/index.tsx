@@ -29,7 +29,7 @@ export default function Home({ posts }: HomeProps) {
   const classes = useStyles();
 
   return (
-    <Layout heading="Neuigkeiten">
+    <Layout heading="Neuigkeiten" currentPage="news">
       <Grid container direction="column" spacing={2}>
         {posts.map(({ title, content }) => (
           <Grid item>

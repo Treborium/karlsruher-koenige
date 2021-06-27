@@ -35,7 +35,7 @@ export default function About() {
   ];
 
   return (
-    <Layout heading="Karlsruher Könige">
+    <Layout heading="Karlsruher Könige" currentPage="about">
       <h2 className={styles.heading}>Wer sind wir?</h2>
       <p className={styles.text}>
         Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
