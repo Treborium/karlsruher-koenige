@@ -3,7 +3,6 @@ import { Button, Grid, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 import Layout from '../components/layout';
-import styles from '../styles/beer.module.scss';
 
 const useStyles = makeStyles({
   root: {
@@ -30,7 +29,6 @@ export default function Beer() {
         </Grid>
         <Grid item>
           <Button
-            className={styles.button}
             variant="contained"
             color="primary"
             size="large"
