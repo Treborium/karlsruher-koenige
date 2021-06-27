@@ -1,6 +1,3 @@
-import Layout from '../components/layout';
-import styles from '../styles/about.module.scss';
-
 import {
   Accordion,
   AccordionSummary,
@@ -15,13 +12,31 @@ import {
   TableRow,
   TableCell,
   Paper,
+  Theme,
 } from '@material-ui/core';
+import { makeStyles, createStyles } from '@material-ui/core/styles';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Mail from '@material-ui/icons/Mail';
 import Launch from '@material-ui/icons/Launch';
 import { FunctionComponent } from 'react';
 
+import Layout from '../components/layout';
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    heading: {
+      marginBottom: theme.spacing(2),
+    },
+    text: {
+      marginBottom: theme.spacing(2),
+      textAlign: 'justify',
+    },
+  })
+);
+
 export default function About() {
+  const classes = useStyles();
+
   const createData = (day: string, time: string, group: string) => ({
     day,
     time,
@@ -36,12 +51,14 @@ export default function About() {
 
   return (
     <Layout heading="Karlsruher Könige" currentPage="about">
-      <h2 className={styles.heading}>Wer sind wir?</h2>
-      <p className={styles.text}>
+      <Typography variant="h5" className={classes.heading}>
+        Wer sind wir?
+      </Typography>
+      <Typography variant="body1" className={classes.text}>
         Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
         eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam
         voluptua.
-      </p>
+      </Typography>
 
       <AccordionWithButton
         title="Anmeldung"
