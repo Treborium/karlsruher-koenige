@@ -21,9 +21,9 @@ export default function Post({
     <>
       <Head>
         <title>{postData.title}</title>
-        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        <meta name='viewport' content='initial-scale=1.0, width=device-width' />
       </Head>
-      <Layout heading={postData.title} currentPage="news">
+      <Layout heading={postData.title} currentPage='news'>
         <p>{postData.content}</p>
       </Layout>
     </>
@@ -41,11 +41,12 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const key = createHash('md5')
     .update(params.id as string)
     .digest('hex');
-  const content = await getObject(initS3Client(), key as string);
+  const content = await getObject(initS3Client(), key);
   const message: Message = JSON.parse(content);
   return {
     props: {
       postData: { title: message.subject, content: message.text },
     },
+    revalidate: 60,
   };
 };
