@@ -1,11 +1,19 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
 import Head from 'next/head';
+import { makeStyles } from '@material-ui/core/styles';
+
 import Layout from '../../components/layout';
 import {
   getAllStaticFileIds,
   getStaticFileData,
   getSongsDirectory,
 } from '../../lib/static-file';
+
+const useStyles = makeStyles({
+  lyrics: {
+    whiteSpace: 'pre-wrap',
+  },
+});
 
 export default function Song({
   songData,
@@ -15,14 +23,16 @@ export default function Song({
     content: string;
   };
 }) {
+  const classes = useStyles();
+
   return (
     <>
       <Head>
         <title>{songData.title}</title>
-        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        <meta name='viewport' content='initial-scale=1.0, width=device-width' />
       </Head>
-      <Layout heading={songData.title} currentPage="songs">
-        <p>{songData.content}</p>
+      <Layout heading={songData.title} currentPage='songs'>
+        <p className={classes.lyrics}>{songData.content}</p>
       </Layout>
     </>
   );

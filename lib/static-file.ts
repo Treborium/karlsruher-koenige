@@ -7,12 +7,13 @@ export interface StaticFile {
 }
 
 export async function getSortedData(directory: string): Promise<StaticFile[]> {
-  // TODO: Sort by date
   const filenames = await fs.readdir(directory);
 
   const posts = filenames.map(async (filename) => {
     const filePath = path.join(directory, filename);
     const fileContents = await fs.readFile(filePath, 'utf8');
+
+    console.log(filePath, fileContents);
 
     return {
       title: filename,
@@ -20,7 +21,7 @@ export async function getSortedData(directory: string): Promise<StaticFile[]> {
     };
   });
 
-  return await Promise.all(posts);
+  return Promise.all(posts);
 }
 
 export async function getStaticFileData(
