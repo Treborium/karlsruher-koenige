@@ -54,22 +54,22 @@ export default function About() {
     <>
       <Head>
         <title>Über uns</title>
-        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        <meta name='viewport' content='initial-scale=1.0, width=device-width' />
       </Head>
-      <Layout heading="Karlsruher Könige" currentPage="about">
-        <Typography variant="h5" className={classes.heading}>
+      <Layout heading='Karlsruher Könige' currentPage='about'>
+        <Typography variant='h5' className={classes.heading}>
           Wer sind wir?
         </Typography>
-        <Typography variant="body1" className={classes.text}>
+        <Typography variant='body1' className={classes.text}>
           Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
           nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
           sed diam voluptua.
         </Typography>
 
         <AccordionWithButton
-          title="Anmeldung"
-          buttonLink="https://buchsys.sport.uni-karlsruhe.de/angebote/aktueller_zeitraum/index.html"
-          buttonText="Anmeldung"
+          title='Anmeldung'
+          buttonLink='https://buchsys.sport.uni-karlsruhe.de/angebote/aktueller_zeitraum/index.html'
+          buttonText='Anmeldung'
           icon={<Launch />}
         >
           Du hast Interesse den Karlsruher Königen beizutreten und beim Unisport
@@ -80,19 +80,19 @@ export default function About() {
         <Accordion>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1a-content"
-            id="panel1a-header"
+            aria-controls='panel1a-content'
+            id='panel1a-header'
           >
             <Typography>Trainingszeiten</Typography>
           </AccordionSummary>
           <AccordionDetails>
-            <Grid container direction="column" alignItems="center" spacing={2}>
+            <Grid container direction='column' alignItems='center' spacing={2}>
               <Grid item>
                 <TableContainer component={Paper}>
                   <Table
-                    aria-label="simple table"
-                    size="small"
-                    padding="checkbox"
+                    aria-label='simple table'
+                    size='small'
+                    padding='checkbox'
                   >
                     <TableHead>
                       <TableRow>
@@ -122,10 +122,11 @@ export default function About() {
               </Grid>
               <Grid item>
                 <Button
-                  variant="contained"
-                  color="primary"
-                  size="small"
-                  href="https://buchsys.sport.uni-karlsruhe.de/angebote/aktueller_zeitraum/index.html"
+                  variant='contained'
+                  color='primary'
+                  size='small'
+                  href='https://buchsys.sport.uni-karlsruhe.de/angebote/aktueller_zeitraum/index.html'
+                  endIcon={<Launch />}
                 >
                   Trainingszeiten
                 </Button>
@@ -134,9 +135,9 @@ export default function About() {
           </AccordionDetails>
         </Accordion>
         <AccordionWithButton
-          title="Kontakt"
-          buttonText="Mail Senden"
-          buttonLink="mailto:turnkoenige@gmail.com"
+          title='Kontakt'
+          buttonText='Mail Senden'
+          buttonLink='mailto:turnkoenige@gmail.com'
           icon={<Mail />}
         >
           Falls du Fragen hast oder gerne Kontakt zu uns aufnehmen möchtest,
@@ -165,21 +166,21 @@ const AccordionWithButton: FunctionComponent<AccordionWithButtonProps> = ({
     <Accordion>
       <AccordionSummary
         expandIcon={<ExpandMoreIcon />}
-        aria-controls="panel1a-content"
-        id="panel1a-header"
+        aria-controls='panel1a-content'
+        id='panel1a-header'
       >
         <Typography>{title}</Typography>
       </AccordionSummary>
       <AccordionDetails>
-        <Grid container direction="column" alignItems="center" spacing={2}>
+        <Grid container direction='column' alignItems='center' spacing={2}>
           <Grid item>
             <Typography>{children}</Typography>
           </Grid>
           <Grid item>
             <Button
-              variant="contained"
-              color="primary"
-              size="small"
+              variant='contained'
+              color='primary'
+              size='small'
               href={buttonLink}
               endIcon={icon}
             >
