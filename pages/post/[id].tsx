@@ -14,7 +14,6 @@ import {
 
 const useStyles = makeStyles({
   content: {
-    textAlign: 'justify',
     whiteSpace: 'pre-wrap',
   },
 });
@@ -57,6 +56,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const key = createHash('md5')
     .update(params.id as string)
     .digest('hex');
+
   const content = await getObject(initS3Client(), key);
   const message: Message = JSON.parse(content);
   return {
