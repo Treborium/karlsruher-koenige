@@ -3,7 +3,6 @@ import { Typography, Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { createHash } from 'crypto';
 import Head from 'next/head';
-import parse from 'html-react-parser';
 
 import Layout from '../../components/layout';
 import {
@@ -16,6 +15,7 @@ import {
 const useStyles = makeStyles({
   content: {
     textAlign: 'justify',
+    whiteSpace: 'pre-wrap',
   },
 });
 
@@ -38,7 +38,7 @@ export default function Post({
       <Layout heading={postData.title} currentPage='news'>
         <Grid container justify='center'>
           <Typography variant='body1' className={classes.content}>
-            {parse(postData.content)}
+            {postData.content}
           </Typography>
         </Grid>
       </Layout>
@@ -61,7 +61,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const message: Message = JSON.parse(content);
   return {
     props: {
-      postData: { title: message.subject, content: message.html },
+      postData: { title: message.subject, content: message.text },
     },
     revalidate: 60,
   };
