@@ -46,18 +46,15 @@ export default function Post({
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
+  const paths = await getStaticPathsForPosts();
   return {
-    paths: await getStaticPathsForPosts(),
+    paths,
     fallback: false,
   };
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const key = createHash('md5')
-    .update(params.id as string)
-    .digest('hex');
-
-  const content = await getObject(initS3Client(), key);
+  const content = await getObject(initS3Client(), params.id as string);
   const message: Message = JSON.parse(content);
   return {
     props: {

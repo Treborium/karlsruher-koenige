@@ -1,5 +1,5 @@
 import Layout from '../components/layout';
-import { getPosts } from '../lib/posts';
+import { createKey, getPosts } from '../lib/posts';
 import { StaticFile } from '../lib/static-file';
 
 import {
@@ -34,20 +34,23 @@ export default function Home({ posts }: HomeProps) {
     <>
       <Head>
         <title>{heading}</title>
-        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        <meta name='viewport' content='initial-scale=1.0, width=device-width' />
       </Head>
-      <Layout heading={heading} currentPage="news">
-        <Grid container direction="column" spacing={2}>
+      <Layout heading={heading} currentPage='news'>
+        <Grid container direction='column' spacing={2}>
           {posts.map(({ title, content }) => (
             <Grid item key={title}>
               <Card>
-                <CardActionArea className={classes.card} href={`post/${title}`}>
+                <CardActionArea
+                  className={classes.card}
+                  href={`post/${createKey(title)}`}
+                >
                   <CardContent>
-                    <Typography variant="body1">
+                    <Typography variant='body1'>
                       {trimToLength(title)}
                     </Typography>
-                    <Divider variant="middle" className={classes.divider} />
-                    <Typography variant="body2">
+                    <Divider variant='middle' className={classes.divider} />
+                    <Typography variant='body2'>
                       {trimToLength(content)}
                     </Typography>
                   </CardContent>

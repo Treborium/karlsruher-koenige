@@ -1,8 +1,9 @@
 import AWS from 'aws-sdk';
+import { createHash } from 'crypto';
 
 export async function getStaticPathsForPosts() {
   const files = await getPosts();
-  return files.map((post: Post) => ({ params: { id: post.title } }));
+  return files.map((post: Post) => ({ params: { id: createKey(post.title) } }));
 }
 
 export async function getPosts(): Promise<Post[]> {
@@ -13,7 +14,7 @@ export async function getPosts(): Promise<Post[]> {
   return rawContents
     .map((content) => JSON.parse(content))
     .map((message: Message) => ({
-      title: replaceAllWhiteSpaces(message.subject),
+      title: message.subject,
       content: message.text,
     }));
 }
@@ -59,8 +60,8 @@ export async function getObject(s3: AWS.S3, key: string): Promise<string> {
   return object.Body.toString();
 }
 
-export function replaceAllWhiteSpaces(str: string, replacement = '-'): string {
-  return str.trim().replace(/\s/g, replacement);
+export function createKey(str: string): string {
+  return createHash('md5').update(str).digest('hex');
 }
 
 export interface Message {

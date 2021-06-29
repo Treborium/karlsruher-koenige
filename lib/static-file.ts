@@ -13,8 +13,6 @@ export async function getSortedData(directory: string): Promise<StaticFile[]> {
     const filePath = path.join(directory, filename);
     const fileContents = await fs.readFile(filePath, 'utf8');
 
-    console.log(filePath, fileContents);
-
     return {
       title: filename,
       content: fileContents,
