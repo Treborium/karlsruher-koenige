@@ -1,5 +1,10 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
+import { Typography, Grid } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import { createHash } from 'crypto';
 import Head from 'next/head';
+import parse from 'html-react-parser';
+
 import Layout from '../../components/layout';
 import {
   getObject,
@@ -7,7 +12,12 @@ import {
   initS3Client,
   Message,
 } from '../../lib/posts';
-import { createHash } from 'crypto';
+
+const useStyles = makeStyles({
+  content: {
+    textAlign: 'justify',
+  },
+});
 
 export default function Post({
   postData,
@@ -17,6 +27,8 @@ export default function Post({
     content: string;
   };
 }) {
+  const classes = useStyles();
+
   return (
     <>
       <Head>
@@ -24,7 +36,11 @@ export default function Post({
         <meta name='viewport' content='initial-scale=1.0, width=device-width' />
       </Head>
       <Layout heading={postData.title} currentPage='news'>
-        <p>{postData.content}</p>
+        <Grid container justify='center'>
+          <Typography variant='body1' className={classes.content}>
+            {parse(postData.content)}
+          </Typography>
+        </Grid>
       </Layout>
     </>
   );
@@ -45,7 +61,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const message: Message = JSON.parse(content);
   return {
     props: {
-      postData: { title: message.subject, content: message.text },
+      postData: { title: message.subject, content: message.html },
     },
     revalidate: 60,
   };
