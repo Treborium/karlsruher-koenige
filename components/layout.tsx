@@ -1,5 +1,7 @@
 import { AppBar, Typography, Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import { loadCSS } from 'fg-loadcss';
+import { useEffect } from 'react';
 
 import Menu from './menu';
 
@@ -28,6 +30,17 @@ const useStyles = makeStyles({
 
 export default function Layout(props: LayoutProps) {
   const classes = useStyles();
+
+  useEffect(() => {
+    const node = loadCSS(
+      'https://use.fontawesome.com/releases/v5.12.0/css/all.css',
+      document.querySelector('#font-awesome-css')
+    );
+
+    return () => {
+      node.parentNode!.removeChild(node);
+    };
+  }, []);
 
   return (
     <Grid container direction='column'>

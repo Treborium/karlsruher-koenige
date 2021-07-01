@@ -1,4 +1,11 @@
-import { Paper, Typography, Grid, Link } from '@material-ui/core';
+import {
+  Paper,
+  Typography,
+  Grid,
+  Link,
+  Icon,
+  IconButton,
+} from '@material-ui/core';
 import Description from '@material-ui/icons/Description';
 import { makeStyles } from '@material-ui/core/styles';
 import Head from 'next/head';
@@ -12,7 +19,7 @@ import {
 
 const useStyles = makeStyles({
   paper: {
-    minHeight: '5vh',
+    minHeight: '10vh',
     padding: '10px',
   },
 });
@@ -28,22 +35,29 @@ export default function Songs({ songs }: SongProps) {
     <>
       <Head>
         <title>Songs</title>
-        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        <meta name='viewport' content='initial-scale=1.0, width=device-width' />
       </Head>
-      <Layout heading="Königliche Songtexte" currentPage="songs">
-        <Grid container direction="column" spacing={2}>
+      <Layout heading='Königliche Songtexte' currentPage='songs'>
+        <Grid container direction='column' spacing={2}>
           {songs.map(({ title }) => (
             <Grid item key={title}>
-              <Link href={`song/${title}`} key={title} underline="none">
-                <Paper variant="elevation">
+              <Link href={`song/${title}`} key={title} underline='none'>
+                <Paper variant='elevation'>
                   <Grid
                     container
-                    justify="space-between"
-                    alignItems="center"
+                    justify='space-between'
+                    alignItems='center'
                     className={classes.paper}
                   >
                     <Typography>{title}</Typography>
-                    <Description />
+                    <Grid>
+                      <IconButton color='inherit'>
+                        <Icon className='fas fa-file-download' />
+                      </IconButton>
+                      <IconButton color='inherit'>
+                        <Icon className='fab fa-spotify' />
+                      </IconButton>
+                    </Grid>
                   </Grid>
                 </Paper>
               </Link>

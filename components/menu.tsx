@@ -1,10 +1,13 @@
 import React from 'react';
 import { makeStyles, createStyles } from '@material-ui/core/styles';
-import { AppBar, Grid, Theme, Toolbar, IconButton } from '@material-ui/core';
-import Announcement from '@material-ui/icons/Announcement';
-import LocalBar from '@material-ui/icons/LocalBar';
-import MusicNote from '@material-ui/icons/MusicNote';
-import Info from '@material-ui/icons/Info';
+import {
+  AppBar,
+  Grid,
+  Theme,
+  Toolbar,
+  IconButton,
+  Icon,
+} from '@material-ui/core';
 
 interface MenuProps {
   currentPage: string;
@@ -30,20 +33,20 @@ export default function Menu({ currentPage }: MenuProps) {
   };
 
   return (
-    <AppBar position="static" className={classes.root}>
+    <AppBar position='static' className={classes.root}>
       <Toolbar>
-        <Grid container justify="space-between">
-          <IconButton href="/" color={getColor('news')}>
-            <Announcement />
+        <Grid container justify='space-between'>
+          <IconButton href='/' color={getColor('news')}>
+            <Icon className='fas fa-newspaper' />
           </IconButton>
-          <IconButton href="/beer" color={getColor('beer')}>
-            <LocalBar />
+          <IconButton href='/beer' color={getColor('beer')}>
+            <Icon className='fas fa-beer' />
           </IconButton>
-          <IconButton href="/songs" color={getColor('songs')}>
-            <MusicNote />
+          <IconButton href='/songs' color={getColor('songs')}>
+            <Icon className='fas fa-music' />
           </IconButton>
-          <IconButton href="/about" color={getColor('about')}>
-            <Info />
+          <IconButton href='/about' color={getColor('about')}>
+            <Icon className='fas fa-info-circle' />
           </IconButton>
         </Grid>
       </Toolbar>

@@ -13,11 +13,10 @@ import {
   TableCell,
   Paper,
   Theme,
+  Icon,
 } from '@material-ui/core';
 import { makeStyles, createStyles } from '@material-ui/core/styles';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import Mail from '@material-ui/icons/Mail';
-import Launch from '@material-ui/icons/Launch';
 import { FunctionComponent } from 'react';
 import Head from 'next/head';
 
@@ -70,7 +69,7 @@ export default function About() {
           title='Anmeldung'
           buttonLink='https://buchsys.sport.uni-karlsruhe.de/angebote/aktueller_zeitraum/_Geraetturnen.html'
           buttonText='Anmeldung'
-          icon={<Launch />}
+          icon={<Icon className='fas fa-external-link-square-alt' />}
         >
           Du hast Interesse den Karlsruher Königen beizutreten und beim Unisport
           teilzunehmen? Dann melde dich auf der Hochschulsport-Webseite an und
@@ -126,7 +125,7 @@ export default function About() {
                   color='primary'
                   size='small'
                   href='https://buchsys.sport.uni-karlsruhe.de/angebote/aktueller_zeitraum/_Geraetturnen.html'
-                  endIcon={<Launch />}
+                  endIcon={<Icon className='fas fa-external-link-square-alt' />}
                 >
                   Trainingszeiten
                 </Button>
@@ -138,7 +137,7 @@ export default function About() {
           title='Kontakt'
           buttonText='Mail Senden'
           buttonLink='mailto:turnkoenige@gmail.com'
-          icon={<Mail />}
+          icon={<Icon className='fas fa-envelope' />}
         >
           Falls du Fragen hast oder gerne Kontakt zu uns aufnehmen möchtest,
           erreichst du uns am besten per Mail:
