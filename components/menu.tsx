@@ -36,16 +36,16 @@ export default function Menu({ currentPage }: MenuProps) {
     <AppBar position='static' className={classes.root}>
       <Toolbar>
         <Grid container justify='space-between'>
-          <IconButton href='/' color={getColor('news')}>
+          <IconButton href='/' size='small' color={getColor('news')}>
             <Icon className='fas fa-newspaper' />
           </IconButton>
-          <IconButton href='/beer' color={getColor('beer')}>
+          <IconButton href='/beer' size='small' color={getColor('beer')}>
             <Icon className='fas fa-beer' />
           </IconButton>
-          <IconButton href='/songs' color={getColor('songs')}>
+          <IconButton href='/songs' size='small' color={getColor('songs')}>
             <Icon className='fas fa-music' />
           </IconButton>
-          <IconButton href='/about' color={getColor('about')}>
+          <IconButton href='/about' size='small' color={getColor('about')}>
             <Icon className='fas fa-info-circle' />
           </IconButton>
         </Grid>
