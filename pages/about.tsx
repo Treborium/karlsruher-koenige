@@ -68,7 +68,7 @@ export default function About() {
 
         <AccordionWithButton
           title='Anmeldung'
-          buttonLink='https://buchsys.sport.uni-karlsruhe.de/angebote/aktueller_zeitraum/index.html'
+          buttonLink='https://buchsys.sport.uni-karlsruhe.de/angebote/aktueller_zeitraum/_Geraetturnen.html'
           buttonText='Anmeldung'
           icon={<Launch />}
         >
@@ -125,7 +125,7 @@ export default function About() {
                   variant='contained'
                   color='primary'
                   size='small'
-                  href='https://buchsys.sport.uni-karlsruhe.de/angebote/aktueller_zeitraum/index.html'
+                  href='https://buchsys.sport.uni-karlsruhe.de/angebote/aktueller_zeitraum/_Geraetturnen.html'
                   endIcon={<Launch />}
                 >
                   Trainingszeiten
