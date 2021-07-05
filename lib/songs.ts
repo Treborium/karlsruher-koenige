@@ -1,11 +1,11 @@
-export interface Songs {
+export interface Song {
   title: string;
   lyricsFile: string;
   priority?: number;
   spotifyLink?: string;
 }
 
-const songs: Songs[] = [
+const songs: Song[] = [
   {
     title: 'Königslied',
     lyricsFile: 'Königslied',
@@ -33,4 +33,8 @@ export function getSongsPaths() {
       },
     };
   });
+}
+
+export function getSongs(): Song[] {
+  return songs;
 }
