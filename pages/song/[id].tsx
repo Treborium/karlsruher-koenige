@@ -1,6 +1,7 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
 import Head from 'next/head';
 import { makeStyles } from '@material-ui/core/styles';
+import { Typography } from '@material-ui/core';
 
 import Layout from '../../components/layout';
 import { getStaticFileData, getSongsDirectory } from '../../lib/static-file';
@@ -29,7 +30,9 @@ export default function Song({
         <meta name='viewport' content='initial-scale=1.0, width=device-width' />
       </Head>
       <Layout heading={songData.title} currentPage='songs'>
-        <p className={classes.lyrics}>{songData.content}</p>
+        <Typography variant='body2' className={classes.lyrics}>
+          {songData.content}
+        </Typography>
       </Layout>
     </>
   );

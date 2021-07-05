@@ -17,6 +17,11 @@ const useStyles = makeStyles({
     minHeight: '10vh',
     padding: '10px',
   },
+  highlightedButton: {
+    background:
+      'linear-gradient(90deg, rgba(255,235,59,1) 0%, rgba(3,169,244,1) 100%)',
+  },
+  button: {},
 });
 
 interface SongProps {
@@ -35,10 +40,15 @@ export default function Songs({ songs }: SongProps) {
       </Head>
       <Layout heading='Königliche Songtexte' currentPage='songs'>
         <Grid container direction='column' spacing={2}>
-          {songs.map(({ title, spotifyLink }) => (
+          {songs.map(({ title, spotifyLink, priority }) => (
             <Grid item key={title}>
               <Link href={`song/${title}`} key={title} underline='none'>
-                <Paper variant='elevation'>
+                <Paper
+                  variant='elevation'
+                  className={
+                    priority ? classes.highlightedButton : classes.button
+                  }
+                >
                   <Grid
                     container
                     justify='space-between'
@@ -48,7 +58,7 @@ export default function Songs({ songs }: SongProps) {
                     <Typography>{title}</Typography>
                     {spotifyLink && (
                       <Grid>
-                        {/* href produces an error in dev console */}
+                        {/* TODO: href produces an error in dev console */}
                         <IconButton color='inherit' href={spotifyLink}>
                           <Icon className='fab fa-spotify' />
                         </IconButton>
