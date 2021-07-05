@@ -6,7 +6,6 @@ import {
   Icon,
   IconButton,
 } from '@material-ui/core';
-import Description from '@material-ui/icons/Description';
 import { makeStyles } from '@material-ui/core/styles';
 import Head from 'next/head';
 
@@ -51,9 +50,6 @@ export default function Songs({ songs }: SongProps) {
                   >
                     <Typography>{title}</Typography>
                     <Grid>
-                      <IconButton color='inherit'>
-                        <Icon className='fas fa-file-download' />
-                      </IconButton>
                       <IconButton color='inherit'>
                         <Icon className='fab fa-spotify' />
                       </IconButton>

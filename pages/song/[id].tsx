@@ -3,11 +3,8 @@ import Head from 'next/head';
 import { makeStyles } from '@material-ui/core/styles';
 
 import Layout from '../../components/layout';
-import {
-  getAllStaticFileIds,
-  getStaticFileData,
-  getSongsDirectory,
-} from '../../lib/static-file';
+import { getStaticFileData, getSongsDirectory } from '../../lib/static-file';
+import { getSongsPaths } from '../../lib/songs';
 
 const useStyles = makeStyles({
   lyrics: {
@@ -39,9 +36,8 @@ export default function Song({
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const paths = getAllStaticFileIds(getSongsDirectory());
   return {
-    paths,
+    paths: getSongsPaths(),
     fallback: false,
   };
 };
