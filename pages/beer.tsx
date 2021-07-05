@@ -17,21 +17,39 @@ function Alert(props: AlertProps) {
 }
 
 export default function Beer() {
+  const cookieName = 'beer';
   const classes = useStyles();
   const [count, setCount] = useState(0);
-  const [open, setOpen] = useState(false);
+  const [openSuccess, setOpenSuccess] = useState(false);
+  const [openError, setOpenError] = useState(false);
 
   const handleClick = () => {
-    setCount(count + 1);
-    setOpen(true);
+    if (localStorage.getItem(cookieName)) {
+      setOpenError(true);
+    } else {
+      setCount(count + 1);
+      setOpenSuccess(true);
+      localStorage.setItem(cookieName, Date.now().toString());
+    }
   };
 
-  const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
+  const handleCloseSuccess = (
+    event?: React.SyntheticEvent,
+    reason?: string
+  ) => {
     if (reason === 'clickaway') {
       return;
     }
 
-    setOpen(false);
+    setOpenSuccess(false);
+  };
+
+  const handleCloseError = (event?: React.SyntheticEvent, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpenError(false);
   };
 
   return (
@@ -64,13 +82,24 @@ export default function Beer() {
           </Grid>
 
           <Snackbar
-            open={open}
+            open={openSuccess}
             autoHideDuration={3000}
-            onClose={handleClose}
+            onClose={handleCloseSuccess}
             anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
           >
-            <Alert onClose={handleClose} severity='success'>
+            <Alert onClose={handleCloseSuccess} severity='success'>
               Nice 🙌 dein Kasten wurde registriert!
+            </Alert>
+          </Snackbar>
+
+          <Snackbar
+            open={openError}
+            autoHideDuration={3000}
+            onClose={handleCloseError}
+            anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+          >
+            <Alert onClose={handleCloseError} severity='error'>
+              Sehr nett, aber du kannst nur einen Kasten registrieren ☹️
             </Alert>
           </Snackbar>
         </Grid>
