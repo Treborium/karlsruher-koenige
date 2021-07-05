@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme: Theme) =>
       top: 'auto',
       bottom: 0,
       backgroundColor: theme.palette.primary.main,
-      color: '#E9E8E7',
+      color: '#9575cd',
     },
   })
 );
