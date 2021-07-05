@@ -25,6 +25,7 @@ interface SongProps {
 
 export default function Songs({ songs }: SongProps) {
   const classes = useStyles();
+  songs = songs.sort((a, b) => (b.priority || 0) - (a.priority || 0));
 
   return (
     <>
@@ -47,7 +48,8 @@ export default function Songs({ songs }: SongProps) {
                     <Typography>{title}</Typography>
                     {spotifyLink && (
                       <Grid>
-                        <IconButton color='inherit'>
+                        {/* href produces an error in dev console */}
+                        <IconButton color='inherit' href={spotifyLink}>
                           <Icon className='fab fa-spotify' />
                         </IconButton>
                       </Grid>
