@@ -19,7 +19,8 @@ import ConfirmationDialog from '../components/confirmation-dialog';
 
 const useStyles = makeStyles({
   root: {
-    height: '90vh',
+    minHeight: '80vh',
+    flexGrow: 1,
   },
 });
 
@@ -98,7 +99,7 @@ export default function Beer({ countapiNamespace, countapiKey }: BeerProps) {
           className={classes.root}
         >
           <Grid item>
-            <Typography variant='body1'>
+            <Typography variant='h6'>
               Kästen für {getNextTrainingDay()}:
             </Typography>
           </Grid>
