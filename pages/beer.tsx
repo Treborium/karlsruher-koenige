@@ -1,12 +1,5 @@
 import { useState, useEffect, Dispatch, SetStateAction } from 'react';
-import {
-  Button,
-  Grid,
-  Typography,
-  Snackbar,
-  CircularProgress,
-} from '@material-ui/core';
-import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
+import { Button, Grid, Typography, CircularProgress } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Head from 'next/head';
 import countapi from 'countapi-js';
@@ -19,10 +12,6 @@ const useStyles = makeStyles({
     height: '90vh',
   },
 });
-
-function Alert(props: AlertProps) {
-  return <MuiAlert elevation={6} variant='filled' {...props} />;
-}
 
 interface BeerProps {
   countapiNamespace: string;
