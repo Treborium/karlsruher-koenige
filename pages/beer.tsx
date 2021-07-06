@@ -15,6 +15,7 @@ import moment from 'moment';
 
 import Layout from '../components/layout';
 import AlertSnackbar from '../components/alert-snackbar';
+import ConfirmationDialog from '../components/confirmation-dialog';
 
 const useStyles = makeStyles({
   root: {
@@ -28,12 +29,16 @@ interface BeerProps {
 }
 
 export default function Beer({ countapiNamespace, countapiKey }: BeerProps) {
+  const cookieName = 'beer';
   const classes = useStyles();
   const [count, setCount] = useState(0);
   const [countInitiliazed, setCountInitialized] = useState(false);
   const [openSuccess, setOpenSuccess] = useState(false);
   const [openError, setOpenError] = useState(false);
   const [openCookieError, setOpenCookieError] = useState(false);
+  const [openConfirmationDialog, setOpenConfirmationDialog] = useState(false);
+  const [openToolip, setOpenTooltip] = useState(false);
+  const [name, setName] = useState('');
 
   useEffect(() => {
     if (!countInitiliazed) {
@@ -47,22 +52,25 @@ export default function Beer({ countapiNamespace, countapiKey }: BeerProps) {
   });
 
   const handleClick = () => {
-    const cookieName = 'beer';
-
     if (isLessThanADay(localStorage.getItem(cookieName))) {
       setOpenError(true);
     } else {
-      try {
-        countapi.update(countapiNamespace, countapiKey, 1).then((result) => {
-          console.log('Beer Count:', result.value);
-        });
-        localStorage.setItem(cookieName, Date.now().toString());
-        setCount(count + 1);
-        setOpenSuccess(true);
-      } catch (error) {
-        console.error('Could not register beer due to error. error=', error);
-        setOpenCookieError(true);
-      }
+      setOpenConfirmationDialog(true);
+    }
+  };
+
+  const incrementCounter = () => {
+    try {
+      countapi.update(countapiNamespace, countapiKey, 1).then((result) => {
+        console.log('Beer Count:', result.value);
+      });
+      localStorage.setItem(cookieName, Date.now().toString());
+      setCount(count + 1);
+      setOpenSuccess(true);
+      setOpenConfirmationDialog(false);
+    } catch (error) {
+      console.error('Could not register beer due to error. error=', error);
+      setOpenCookieError(true);
     }
   };
 
@@ -102,12 +110,32 @@ export default function Beer({ countapiNamespace, countapiKey }: BeerProps) {
             >
               Kasten!
             </Button>
-            <Tooltip title='Mit dem Drücken des Buttons verpflichtest du dich, einen Kasten Bier (oder andere Getränke) zum nächsten Training mit zu bringen.'>
-              <IconButton>
+            <Tooltip
+              arrow
+              interactive
+              title='Mit dem Drücken des Buttons verpflichtest du dich, einen Kasten Bier (oder andere Getränke) zum nächsten Training mit zu bringen.'
+              open={openToolip}
+              onClose={() => {
+                setOpenTooltip(false);
+              }}
+              onOpen={() => {
+                setOpenTooltip(true);
+              }}
+              leaveTouchDelay={4000}
+            >
+              <IconButton onClick={() => setOpenTooltip(true)}>
                 <Icon className='far fa-question-circle' />
               </IconButton>
             </Tooltip>
           </Grid>
+
+          <ConfirmationDialog
+            open={openConfirmationDialog}
+            onClose={() => setOpenConfirmationDialog(false)}
+            onClickCancel={() => setOpenConfirmationDialog(false)}
+            onClickConfirm={incrementCounter}
+            setInput={setName}
+          />
 
           <AlertSnackbar
             open={openSuccess}
@@ -116,7 +144,7 @@ export default function Beer({ countapiNamespace, countapiKey }: BeerProps) {
             }}
             severity='success'
           >
-            Nice 🙌 dein Kasten wurde registriert!
+            {`Nice 🙌 dein Kasten wurde registriert ${name}!`}
           </AlertSnackbar>
 
           <AlertSnackbar
