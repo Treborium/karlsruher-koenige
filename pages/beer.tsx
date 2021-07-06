@@ -33,6 +33,7 @@ export default function Beer({ countapiNamespace, countapiKey }: BeerProps) {
   const classes = useStyles();
   const [count, setCount] = useState(0);
   const [countInitiliazed, setCountInitialized] = useState(false);
+  const [hasValidCookie, setHasValidCookie] = useState(false);
   const [openSuccess, setOpenSuccess] = useState(false);
   const [openError, setOpenError] = useState(false);
   const [openCookieError, setOpenCookieError] = useState(false);
@@ -40,23 +41,17 @@ export default function Beer({ countapiNamespace, countapiKey }: BeerProps) {
   const [openToolip, setOpenTooltip] = useState(false);
   const [name, setName] = useState('');
 
-  useEffect(() => {
-    if (!countInitiliazed) {
-      countapi.get(countapiNamespace, countapiKey).then((result) => {
-        if (result.status === 200) {
-          setCount(result.value);
-          setCountInitialized(true);
-        }
-      });
-    }
-  });
-
-  const handleClick = () => {
+  const handleClickRegister = () => {
     if (isLessThanADay(localStorage.getItem(cookieName))) {
       setOpenError(true);
     } else {
       setOpenConfirmationDialog(true);
     }
+  };
+
+  const handleClickRevoke = () => {
+    setHasValidCookie(false);
+    localStorage.removeItem(cookieName);
   };
 
   const incrementCounter = () => {
@@ -73,6 +68,19 @@ export default function Beer({ countapiNamespace, countapiKey }: BeerProps) {
       setOpenCookieError(true);
     }
   };
+
+  useEffect(() => {
+    if (!countInitiliazed) {
+      countapi.get(countapiNamespace, countapiKey).then((result) => {
+        if (result.status === 200) {
+          setCount(result.value);
+          setCountInitialized(true);
+        }
+      });
+    }
+
+    setHasValidCookie(isLessThanADay(localStorage.getItem(cookieName)));
+  });
 
   return (
     <>
@@ -102,14 +110,20 @@ export default function Beer({ countapiNamespace, countapiKey }: BeerProps) {
             )}
           </Grid>
           <Grid item>
-            <Button
-              variant='contained'
-              color='primary'
-              size='large'
-              onClick={handleClick}
-            >
-              Kasten!
-            </Button>
+            {hasValidCookie ? (
+              <Button variant='contained' onClick={handleClickRevoke}>
+                Doch nicht 😔
+              </Button>
+            ) : (
+              <Button
+                variant='contained'
+                color='primary'
+                size='large'
+                onClick={handleClickRegister}
+              >
+                Ich bring' einen mit!
+              </Button>
+            )}
             <Tooltip
               arrow
               interactive
