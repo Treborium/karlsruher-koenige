@@ -24,6 +24,7 @@ export default function Beer({ countapiNamespace, countapiKey }: BeerProps) {
   const [countInitiliazed, setCountInitialized] = useState(false);
   const [openSuccess, setOpenSuccess] = useState(false);
   const [openError, setOpenError] = useState(false);
+  const [openCookieError, setOpenCookieError] = useState(false);
 
   useEffect(() => {
     if (!countInitiliazed) {
@@ -51,7 +52,7 @@ export default function Beer({ countapiNamespace, countapiKey }: BeerProps) {
         setOpenSuccess(true);
       } catch (error) {
         console.error('Could not register beer due to error. error=', error);
-        // TODO: Show other error snackbar
+        setOpenCookieError(true);
       }
     }
   };
@@ -107,6 +108,17 @@ export default function Beer({ countapiNamespace, countapiKey }: BeerProps) {
             severity='error'
           >
             Sehr nett, aber du kannst nur einen Kasten registrieren ☹️
+          </AlertSnackbar>
+
+          <AlertSnackbar
+            open={openCookieError}
+            onClose={(_, reason) => {
+              handleClose(reason, setOpenCookieError);
+            }}
+            severity='error'
+          >
+            Oh nein, leider hat da etwas nicht funktioniert 😕 Probier es
+            nochmal in einem anderen Browser.
           </AlertSnackbar>
         </Grid>
       </Layout>
