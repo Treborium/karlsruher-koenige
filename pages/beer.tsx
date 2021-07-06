@@ -1,5 +1,11 @@
 import { useState, useEffect } from 'react';
-import { Button, Grid, Typography, Snackbar } from '@material-ui/core';
+import {
+  Button,
+  Grid,
+  Typography,
+  Snackbar,
+  CircularProgress,
+} from '@material-ui/core';
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 import { makeStyles } from '@material-ui/core/styles';
 import Head from 'next/head';
@@ -24,18 +30,17 @@ interface BeerProps {
 
 export default function Beer({ countapiNamespace, countapiKey }: BeerProps) {
   const classes = useStyles();
-  let isCountInitiliazed = false;
-
   const [count, setCount] = useState(0);
+  const [countInitiliazed, setCountInitialized] = useState(false);
   const [openSuccess, setOpenSuccess] = useState(false);
   const [openError, setOpenError] = useState(false);
 
   useEffect(() => {
-    if (!isCountInitiliazed) {
+    if (!countInitiliazed) {
       countapi.get(countapiNamespace, countapiKey).then((result) => {
         if (result.status === 200) {
           setCount(result.value);
-          isCountInitiliazed = true;
+          setCountInitialized(true);
         }
       });
     }
@@ -96,7 +101,11 @@ export default function Beer({ countapiNamespace, countapiKey }: BeerProps) {
           className={classes.root}
         >
           <Grid item>
-            <Typography variant='h2'>{count}</Typography>
+            {countInitiliazed ? (
+              <Typography variant='h2'>{count}</Typography>
+            ) : (
+              <CircularProgress />
+            )}
           </Grid>
           <Grid item>
             <Button
