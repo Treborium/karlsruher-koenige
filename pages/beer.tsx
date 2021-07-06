@@ -14,7 +14,7 @@ import countapi from 'countapi-js';
 import moment from 'moment';
 
 import Layout from '../components/layout';
-import AlertSnackbar from '../components/AlertSnackbar';
+import AlertSnackbar from '../components/alert-snackbar';
 
 const useStyles = makeStyles({
   root: {
