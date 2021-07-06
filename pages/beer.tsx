@@ -1,5 +1,13 @@
 import { useState, useEffect, Dispatch, SetStateAction } from 'react';
-import { Button, Grid, Typography, CircularProgress } from '@material-ui/core';
+import {
+  Button,
+  Grid,
+  Typography,
+  CircularProgress,
+  Icon,
+  IconButton,
+  Tooltip,
+} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Head from 'next/head';
 import countapi from 'countapi-js';
@@ -94,6 +102,11 @@ export default function Beer({ countapiNamespace, countapiKey }: BeerProps) {
             >
               Kasten!
             </Button>
+            <Tooltip title='Mit dem Drücken des Buttons verpflichtest du dich, einen Kasten Bier (oder andere Getränke) zum nächsten Training mit zu bringen.'>
+              <IconButton>
+                <Icon className='far fa-question-circle' />
+              </IconButton>
+            </Tooltip>
           </Grid>
 
           <AlertSnackbar
