@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Dispatch, SetStateAction } from 'react';
 import {
   Button,
   Grid,
@@ -12,6 +12,7 @@ import Head from 'next/head';
 import countapi from 'countapi-js';
 
 import Layout from '../components/layout';
+import AlertSnackbar from '../components/AlertSnackbar';
 
 const useStyles = makeStyles({
   root: {
@@ -66,25 +67,6 @@ export default function Beer({ countapiNamespace, countapiKey }: BeerProps) {
     }
   };
 
-  const handleCloseSuccess = (
-    event?: React.SyntheticEvent,
-    reason?: string
-  ) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-
-    setOpenSuccess(false);
-  };
-
-  const handleCloseError = (event?: React.SyntheticEvent, reason?: string) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-
-    setOpenError(false);
-  };
-
   return (
     <>
       <Head>
@@ -118,27 +100,25 @@ export default function Beer({ countapiNamespace, countapiKey }: BeerProps) {
             </Button>
           </Grid>
 
-          <Snackbar
+          <AlertSnackbar
             open={openSuccess}
-            autoHideDuration={3000}
-            onClose={handleCloseSuccess}
-            anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+            onClose={(_, reason) => {
+              handleClose(reason, setOpenSuccess);
+            }}
+            severity='success'
           >
-            <Alert onClose={handleCloseSuccess} severity='success'>
-              Nice 🙌 dein Kasten wurde registriert!
-            </Alert>
-          </Snackbar>
+            Nice 🙌 dein Kasten wurde registriert!
+          </AlertSnackbar>
 
-          <Snackbar
+          <AlertSnackbar
             open={openError}
-            autoHideDuration={3000}
-            onClose={handleCloseError}
-            anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+            onClose={(_, reason) => {
+              handleClose(reason, setOpenError);
+            }}
+            severity='error'
           >
-            <Alert onClose={handleCloseError} severity='error'>
-              Sehr nett, aber du kannst nur einen Kasten registrieren ☹️
-            </Alert>
-          </Snackbar>
+            Sehr nett, aber du kannst nur einen Kasten registrieren ☹️
+          </AlertSnackbar>
         </Grid>
       </Layout>
     </>
@@ -148,6 +128,17 @@ export default function Beer({ countapiNamespace, countapiKey }: BeerProps) {
 function isLessThanADay(timestamp: string): boolean {
   const oneDayInMillis = 864e5;
   return timestamp && parseInt(timestamp) > Date.now() - oneDayInMillis;
+}
+
+function handleClose(
+  reason: string,
+  setState: Dispatch<SetStateAction<boolean>>
+) {
+  if (reason === 'clickaway') {
+    return;
+  }
+
+  setState(false);
 }
 
 export async function getStaticProps() {

@@ -8,7 +8,7 @@ import Menu from './menu';
 export interface LayoutProps {
   heading: string;
   currentPage: string;
-  children?: JSX.Element | JSX.Element[];
+  children?: React.ReactNode;
 }
 
 const useStyles = makeStyles({
