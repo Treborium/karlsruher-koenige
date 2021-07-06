@@ -24,7 +24,7 @@ export default function Beer() {
   const [openError, setOpenError] = useState(false);
 
   const handleClick = () => {
-    if (localStorage.getItem(cookieName)) {
+    if (isLessThanADay(localStorage.getItem(cookieName))) {
       setOpenError(true);
     } else {
       setCount(count + 1);
@@ -106,4 +106,9 @@ export default function Beer() {
       </Layout>
     </>
   );
+}
+
+function isLessThanADay(timestamp: string): boolean {
+  const oneDayInMillis = 864e5;
+  return timestamp && parseInt(timestamp) > Date.now() - oneDayInMillis;
 }
