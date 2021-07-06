@@ -3,6 +3,7 @@ import { Button, Grid, Typography, CircularProgress } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Head from 'next/head';
 import countapi from 'countapi-js';
+import moment from 'moment';
 
 import Layout from '../components/layout';
 import AlertSnackbar from '../components/AlertSnackbar';
@@ -73,6 +74,11 @@ export default function Beer({ countapiNamespace, countapiKey }: BeerProps) {
           className={classes.root}
         >
           <Grid item>
+            <Typography variant='body1'>
+              Kästen für {getNextTrainingDay()}:
+            </Typography>
+          </Grid>
+          <Grid item>
             {countInitiliazed ? (
               <Typography variant='h2'>{count}</Typography>
             ) : (
@@ -140,6 +146,17 @@ function handleClose(
   }
 
   setState(false);
+}
+
+function getNextTrainingDay(): string {
+  if (
+    moment().isoWeekday() > moment().isoWeekday('Monday').isoWeekday() &&
+    moment().isoWeekday() <= moment().isoWeekday('Thursday').isoWeekday()
+  ) {
+    return 'Donnerstag';
+  }
+
+  return 'Montag';
 }
 
 export async function getStaticProps() {
