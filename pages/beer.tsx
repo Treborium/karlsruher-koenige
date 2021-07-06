@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button, Grid, Typography, Snackbar } from '@material-ui/core';
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 import { makeStyles } from '@material-ui/core/styles';
 import Head from 'next/head';
+import countapi from 'countapi-js';
 
 import Layout from '../components/layout';
 
@@ -16,11 +17,29 @@ function Alert(props: AlertProps) {
   return <MuiAlert elevation={6} variant='filled' {...props} />;
 }
 
-export default function Beer() {
+interface BeerProps {
+  countapiNamespace: string;
+  countapiKey: string;
+}
+
+export default function Beer({ countapiNamespace, countapiKey }: BeerProps) {
   const classes = useStyles();
+  let isCountInitiliazed = false;
+
   const [count, setCount] = useState(0);
   const [openSuccess, setOpenSuccess] = useState(false);
   const [openError, setOpenError] = useState(false);
+
+  useEffect(() => {
+    if (!isCountInitiliazed) {
+      countapi.get(countapiNamespace, countapiKey).then((result) => {
+        if (result.status === 200) {
+          setCount(result.value);
+          isCountInitiliazed = true;
+        }
+      });
+    }
+  });
 
   const handleClick = () => {
     const cookieName = 'beer';
@@ -29,6 +48,9 @@ export default function Beer() {
       setOpenError(true);
     } else {
       try {
+        countapi.update(countapiNamespace, countapiKey, 1).then((result) => {
+          console.log('Beer Count:', result.value);
+        });
         localStorage.setItem(cookieName, Date.now().toString());
         setCount(count + 1);
         setOpenSuccess(true);
@@ -117,4 +139,13 @@ export default function Beer() {
 function isLessThanADay(timestamp: string): boolean {
   const oneDayInMillis = 864e5;
   return timestamp && parseInt(timestamp) > Date.now() - oneDayInMillis;
+}
+
+export async function getStaticProps() {
+  return {
+    props: {
+      countapiNamespace: process.env.X_COUNT_API_NAMESPACE,
+      countapiKey: process.env.X_COUNT_API_KEY,
+    },
+  };
 }

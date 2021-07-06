@@ -67,7 +67,6 @@ export default function Home({ posts }: HomeProps) {
 export async function getStaticProps() {
   return {
     props: {
-      // TODO: Don't display title with dashes anymore
       posts: await getPosts(),
     },
   };
