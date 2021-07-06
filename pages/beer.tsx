@@ -17,19 +17,25 @@ function Alert(props: AlertProps) {
 }
 
 export default function Beer() {
-  const cookieName = 'beer';
   const classes = useStyles();
   const [count, setCount] = useState(0);
   const [openSuccess, setOpenSuccess] = useState(false);
   const [openError, setOpenError] = useState(false);
 
   const handleClick = () => {
+    const cookieName = 'beer';
+
     if (isLessThanADay(localStorage.getItem(cookieName))) {
       setOpenError(true);
     } else {
-      setCount(count + 1);
-      setOpenSuccess(true);
-      localStorage.setItem(cookieName, Date.now().toString());
+      try {
+        localStorage.setItem(cookieName, Date.now().toString());
+        setCount(count + 1);
+        setOpenSuccess(true);
+      } catch (error) {
+        console.error('Could not register beer due to error. error=', error);
+        // TODO: Show other error snackbar
+      }
     }
   };
 
