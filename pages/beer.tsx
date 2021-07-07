@@ -10,12 +10,12 @@ import {
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Head from 'next/head';
-import countapi from 'countapi-js';
 import moment from 'moment';
 
 import Layout from '../components/layout';
 import AlertSnackbar from '../components/alert-snackbar';
 import ConfirmationDialog from '../components/confirmation-dialog';
+import { Counter } from '../lib/counter';
 
 const useStyles = makeStyles({
   root: {
@@ -41,6 +41,7 @@ export default function Beer({ countapiNamespace, countapiKey }: BeerProps) {
   const [openConfirmationDialog, setOpenConfirmationDialog] = useState(false);
   const [openToolip, setOpenTooltip] = useState(false);
   const [name, setName] = useState('');
+  const counter = new Counter(countapiNamespace, countapiKey, setCount);
 
   const handleClickRegister = () => {
     if (isLessThanADay(localStorage.getItem(cookieName))) {
@@ -50,21 +51,15 @@ export default function Beer({ countapiNamespace, countapiKey }: BeerProps) {
     }
   };
 
-  const handleClickRevoke = () => {
+  const handleClickRevoke = async () => {
     localStorage.removeItem(cookieName);
     setHasValidCookie(false);
-    countapi.update(countapiNamespace, countapiKey, -1).then((result) => {
-      console.log('Beer Count decremented:', result.value);
-      setCount(result.value);
-    });
+    await counter.decrement();
   };
 
-  const incrementCounter = () => {
+  const incrementCount = async () => {
     try {
-      countapi.update(countapiNamespace, countapiKey, 1).then((result) => {
-        console.log('Beer Count incremented:', result.value);
-        setCount(result.value);
-      });
+      await counter.increment();
       localStorage.setItem(cookieName, Date.now().toString());
       setOpenSuccess(true);
       setOpenConfirmationDialog(false);
@@ -76,12 +71,10 @@ export default function Beer({ countapiNamespace, countapiKey }: BeerProps) {
 
   useEffect(() => {
     if (!countInitiliazed) {
-      countapi.get(countapiNamespace, countapiKey).then((result) => {
-        if (result.status === 200) {
-          setCount(result.value);
-          setCountInitialized(true);
-        }
-      });
+      counter
+        .getValue()
+        .then(() => setCountInitialized(true))
+        .catch((error) => console.error(error));
     }
 
     setHasValidCookie(isLessThanADay(localStorage.getItem(cookieName)));
@@ -152,7 +145,7 @@ export default function Beer({ countapiNamespace, countapiKey }: BeerProps) {
             open={openConfirmationDialog}
             onClose={() => setOpenConfirmationDialog(false)}
             onClickCancel={() => setOpenConfirmationDialog(false)}
-            onClickConfirm={incrementCounter}
+            onClickConfirm={incrementCount}
             setInput={setName}
           />
 
