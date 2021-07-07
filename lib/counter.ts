@@ -2,8 +2,8 @@ import countapi from 'countapi-js';
 import { Dispatch, SetStateAction } from 'react';
 
 export class Counter {
-  namespace: string;
-  key: string;
+  private namespace: string;
+  private key: string;
   setCounter: Dispatch<SetStateAction<number>>;
 
   constructor(
