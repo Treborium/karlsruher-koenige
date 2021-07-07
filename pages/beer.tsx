@@ -51,17 +51,21 @@ export default function Beer({ countapiNamespace, countapiKey }: BeerProps) {
   };
 
   const handleClickRevoke = () => {
-    setHasValidCookie(false);
     localStorage.removeItem(cookieName);
+    setHasValidCookie(false);
+    countapi.update(countapiNamespace, countapiKey, -1).then((result) => {
+      console.log('Beer Count decremented:', result.value);
+      setCount(result.value);
+    });
   };
 
   const incrementCounter = () => {
     try {
       countapi.update(countapiNamespace, countapiKey, 1).then((result) => {
-        console.log('Beer Count:', result.value);
+        console.log('Beer Count incremented:', result.value);
+        setCount(result.value);
       });
       localStorage.setItem(cookieName, Date.now().toString());
-      setCount(count + 1);
       setOpenSuccess(true);
       setOpenConfirmationDialog(false);
     } catch (error) {
