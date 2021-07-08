@@ -6,6 +6,7 @@ import {
   CircularProgress,
   Icon,
   IconButton,
+  ButtonGroup,
   Tooltip,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
@@ -108,37 +109,43 @@ export default function Beer({ countapiNamespace, countapiKey }: BeerProps) {
             )}
           </Grid>
           <Grid item>
-            {hasValidCookie ? (
-              <Button variant='contained' onClick={handleClickRevoke}>
-                Doch nicht 😔
-              </Button>
-            ) : (
-              <Button
-                variant='contained'
-                color='primary'
-                size='large'
-                onClick={handleClickRegister}
-              >
-                Ich bring' einen mit!
-              </Button>
-            )}
-            <Tooltip
-              arrow
-              interactive
-              title='Mit dem Drücken des Buttons verpflichtest du dich, einen Kasten Bier (oder andere Getränke) zum nächsten Training mit zu bringen.'
-              open={openToolip}
-              onClose={() => {
-                setOpenTooltip(false);
-              }}
-              onOpen={() => {
-                setOpenTooltip(true);
-              }}
-              leaveTouchDelay={4000}
+            <ButtonGroup
+              variant='contained'
+              color='primary'
+              aria-label='split button'
             >
-              <IconButton onClick={() => setOpenTooltip(true)}>
-                <Icon className='far fa-question-circle' />
-              </IconButton>
-            </Tooltip>
+              {hasValidCookie ? (
+                <Button variant='contained' onClick={handleClickRevoke}>
+                  Doch nicht 😔
+                </Button>
+              ) : (
+                <Button
+                  variant='contained'
+                  color='primary'
+                  size='large'
+                  onClick={handleClickRegister}
+                >
+                  Ich bring' einen mit!
+                </Button>
+              )}
+              <Tooltip
+                arrow
+                interactive
+                title='Mit dem Drücken des Buttons verpflichtest du dich, einen Kasten Bier (oder andere Getränke) zum nächsten Training mit zu bringen.'
+                open={openToolip}
+                onClose={() => {
+                  setOpenTooltip(false);
+                }}
+                onOpen={() => {
+                  setOpenTooltip(true);
+                }}
+                leaveTouchDelay={4000}
+              >
+                <IconButton onClick={() => setOpenTooltip(true)}>
+                  <Icon className='far fa-question-circle' />
+                </IconButton>
+              </Tooltip>
+            </ButtonGroup>
           </Grid>
 
           <ConfirmationDialog
