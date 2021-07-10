@@ -16,12 +16,15 @@ import moment from 'moment';
 import Layout from '../components/layout';
 import AlertSnackbar from '../components/alert-snackbar';
 import ConfirmationDialog from '../components/confirmation-dialog';
+import PinnedList from '../components/pinned-list';
 import { Counter } from '../lib/counter';
 
 const useStyles = makeStyles({
   root: {
-    minHeight: '80vh',
     flexGrow: 1,
+  },
+  pinnedList: {
+    alignSelf: 'stretch',
   },
 });
 
@@ -96,11 +99,16 @@ export default function Beer({ countapiNamespace, countapiKey }: BeerProps) {
           justify='center'
           className={classes.root}
         >
+          <Grid item className={classes.pinnedList}>
+            <PinnedList />
+          </Grid>
+
           <Grid item>
             <Typography variant='h6'>
               Kästen für {getNextTrainingDay()}:
             </Typography>
           </Grid>
+
           <Grid item>
             {countInitiliazed ? (
               <Typography variant='h2'>{count}</Typography>
