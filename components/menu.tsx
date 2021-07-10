@@ -19,8 +19,8 @@ const useStyles = makeStyles((theme: Theme) =>
       position: 'sticky',
       top: 'auto',
       bottom: 0,
-      backgroundColor: theme.palette.primary.main,
-      color: '#b39ddb',
+      backgroundColor: '#f9f8f7',
+      color: theme.palette.text.secondary,
     },
   })
 );
@@ -29,7 +29,7 @@ export default function Menu({ currentPage }: MenuProps) {
   const classes = useStyles();
 
   const getColor = (page) => {
-    return currentPage === page ? 'secondary' : 'inherit';
+    return currentPage === page ? 'primary' : 'inherit';
   };
 
   return (
