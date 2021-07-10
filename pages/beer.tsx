@@ -25,6 +25,7 @@ const useStyles = makeStyles({
   },
   pinnedList: {
     alignSelf: 'stretch',
+    marginBottom: '3vh',
   },
 });
 

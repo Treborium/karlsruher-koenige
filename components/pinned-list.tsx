@@ -5,7 +5,6 @@ import {
   ListItemText,
   ListItemAvatar,
   Avatar,
-  Icon,
 } from '@material-ui/core';
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
 
@@ -16,7 +15,7 @@ const useStyles = makeStyles((theme: Theme) =>
       backgroundColor: theme.palette.background.paper,
       position: 'relative',
       overflow: 'auto',
-      height: '30vh',
+      height: '35vh',
     },
     listSection: {
       backgroundColor: 'inherit',
@@ -30,6 +29,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function PinnedList() {
   const classes = useStyles();
+  const names = ['Robert', 'Katja', 'Max', 'Meret', 'Anna', 'Luca'];
 
   return (
     <List
@@ -40,14 +40,14 @@ export default function PinnedList() {
         </ListSubheader>
       }
     >
-      {[0, 1, 2, 3, 4, 5].map((item) => (
-        <ListItem key={`item-${item}`}>
+      {names.map((name) => (
+        <ListItem key={`item-${name}`}>
           <ListItemAvatar>
-            <Avatar>
-              <Icon className='fas fa-user' />
-            </Avatar>
+            <Avatar
+              src={`https://avatars.dicebear.com/api/micah/${name}.svg`}
+            />
           </ListItemAvatar>
-          <ListItemText primary={`Item ${item}`} />
+          <ListItemText primary={name} />
         </ListItem>
       ))}
     </List>
