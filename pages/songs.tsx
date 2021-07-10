@@ -19,7 +19,8 @@ const useStyles = makeStyles({
   },
   highlightedButton: {
     background:
-      'linear-gradient(90deg, rgba(255,235,59,1) 0%, rgba(3,169,244,1) 100%)',
+      'linear-gradient(90deg, rgba(124,77,255,1) 0%, rgba(3,169,244,1) 100%)',
+    color: '#FFF',
   },
   button: {},
 });
