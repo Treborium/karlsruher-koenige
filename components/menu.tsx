@@ -16,7 +16,7 @@ interface MenuProps {
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      position: 'sticky',
+      position: 'fixed',
       top: 'auto',
       bottom: 0,
       backgroundColor: '#f9f8f7',

@@ -21,7 +21,6 @@ const useStyles = makeStyles({
     marginBottom: '3vh',
   },
   content: {
-    minHeight: '100vh',
     maxWidth: '800px',
     flexGrow: 1,
     padding: '1vh 7vw',
