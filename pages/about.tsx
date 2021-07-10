@@ -46,7 +46,7 @@ export default function About() {
   const rows = [
     createData('Montag', '20:30 Uhr', 'Alle'),
     createData('Donnerstag', '20:00 Uhr', 'Alle'),
-    createData('Freitag', '17:30 Uhr', 'Wettkampf'),
+    createData('Freitag', '17:00 Uhr', 'Wettkampf'),
   ];
 
   return (
