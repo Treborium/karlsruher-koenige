@@ -19,7 +19,7 @@ const theme = createMuiTheme({
     divider: '#BDBDBD',
   },
   typography: {
-    fontSize: 16,
+    fontSize: 14,
   },
 });
 
