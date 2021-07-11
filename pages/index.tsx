@@ -5,12 +5,12 @@ import {
   Card,
   CardContent,
   Typography,
-  Divider,
   Grid,
   CardActionArea,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Head from 'next/head';
+import moment from 'moment';
 
 interface HomeProps {
   messages: Message[];
@@ -22,6 +22,9 @@ const useStyles = makeStyles({
   },
   divider: {
     margin: '1vh 0',
+  },
+  content: {
+    marginTop: '2vh',
   },
 });
 
@@ -37,7 +40,7 @@ export default function Home({ messages }: HomeProps) {
       </Head>
       <Layout heading={heading} currentPage='news'>
         <Grid container direction='column' spacing={2}>
-          {messages.map(({ subject, text }) => (
+          {messages.map(({ subject, text, receivedOn }) => (
             <Grid item key={subject}>
               <Card>
                 <CardActionArea
@@ -45,11 +48,11 @@ export default function Home({ messages }: HomeProps) {
                   href={`post/${createKey(subject)}`}
                 >
                   <CardContent>
-                    <Typography variant='body1'>
-                      {trimToLength(subject)}
+                    <Typography variant='body1'>{subject}</Typography>
+                    <Typography variant='body2' color='textSecondary'>
+                      {moment(receivedOn).locale('de').calendar()}
                     </Typography>
-                    <Divider variant='middle' className={classes.divider} />
-                    <Typography variant='body2'>
+                    <Typography variant='body2' className={classes.content}>
                       {trimToLength(text)}
                     </Typography>
                   </CardContent>
