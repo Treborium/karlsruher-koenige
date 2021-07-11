@@ -3,20 +3,17 @@ import { createHash } from 'crypto';
 
 export async function getStaticPathsForPosts() {
   const files = await getPosts();
-  return files.map((post: Post) => ({ params: { id: createKey(post.title) } }));
+  return files.map((message: Message) => ({
+    params: { id: createKey(message.subject) },
+  }));
 }
 
-export async function getPosts(): Promise<Post[]> {
+export async function getPosts(): Promise<Message[]> {
   const s3 = initS3Client();
   const filenames = await listBucketContent(s3);
   const rawContents = await getBucketContent(s3, filenames);
 
-  return rawContents
-    .map((content) => JSON.parse(content))
-    .map((message: Message) => ({
-      title: message.subject,
-      content: message.text,
-    }));
+  return rawContents.map((content) => JSON.parse(content));
 }
 
 function listBucketContent(s3: AWS.S3): Promise<AWS.S3.ListObjectsV2Output> {

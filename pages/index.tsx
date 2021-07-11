@@ -1,6 +1,5 @@
 import Layout from '../components/layout';
-import { createKey, getPosts } from '../lib/posts';
-import { StaticFile } from '../lib/static-file';
+import { createKey, getPosts, Message } from '../lib/posts';
 
 import {
   Card,
@@ -14,7 +13,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Head from 'next/head';
 
 interface HomeProps {
-  posts: StaticFile[];
+  messages: Message[];
 }
 
 const useStyles = makeStyles({
@@ -26,7 +25,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function Home({ posts }: HomeProps) {
+export default function Home({ messages }: HomeProps) {
   const classes = useStyles();
   const heading = 'Neuigkeiten';
 
@@ -38,20 +37,20 @@ export default function Home({ posts }: HomeProps) {
       </Head>
       <Layout heading={heading} currentPage='news'>
         <Grid container direction='column' spacing={2}>
-          {posts.map(({ title, content }) => (
-            <Grid item key={title}>
+          {messages.map(({ subject, text }) => (
+            <Grid item key={subject}>
               <Card>
                 <CardActionArea
                   className={classes.card}
-                  href={`post/${createKey(title)}`}
+                  href={`post/${createKey(subject)}`}
                 >
                   <CardContent>
                     <Typography variant='body1'>
-                      {trimToLength(title)}
+                      {trimToLength(subject)}
                     </Typography>
                     <Divider variant='middle' className={classes.divider} />
                     <Typography variant='body2'>
-                      {trimToLength(content)}
+                      {trimToLength(text)}
                     </Typography>
                   </CardContent>
                 </CardActionArea>
@@ -67,7 +66,7 @@ export default function Home({ posts }: HomeProps) {
 export async function getStaticProps() {
   return {
     props: {
-      posts: await getPosts(),
+      messages: await getPosts(),
     },
   };
 }
