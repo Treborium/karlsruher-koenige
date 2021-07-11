@@ -27,9 +27,12 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export default function PinnedList() {
+export interface PinnedListProps {
+  items: string[];
+}
+
+export default function PinnedList({ items }: PinnedListProps) {
   const classes = useStyles();
-  const names = ['Robert', 'Katja', 'Max', 'Meret', 'Anna', 'Luca'];
 
   return (
     <List
@@ -40,14 +43,14 @@ export default function PinnedList() {
         </ListSubheader>
       }
     >
-      {names.map((name) => (
-        <ListItem key={`item-${name}`}>
+      {items.map((item) => (
+        <ListItem key={`item-${item}`}>
           <ListItemAvatar>
             <Avatar
-              src={`https://avatars.dicebear.com/api/micah/${name}.svg`}
+              src={`https://avatars.dicebear.com/api/micah/${item}.svg`}
             />
           </ListItemAvatar>
-          <ListItemText primary={name} />
+          <ListItemText primary={item} />
         </ListItem>
       ))}
     </List>

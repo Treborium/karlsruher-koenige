@@ -18,6 +18,7 @@ import AlertSnackbar from '../components/alert-snackbar';
 import ConfirmationDialog from '../components/confirmation-dialog';
 import PinnedList from '../components/pinned-list';
 import { Counter } from '../lib/counter';
+import Donors from '../lib/donors';
 
 const useStyles = makeStyles({
   root: {
@@ -32,9 +33,14 @@ const useStyles = makeStyles({
 interface BeerProps {
   countapiNamespace: string;
   countapiKey: string;
+  names: string[];
 }
 
-export default function Beer({ countapiNamespace, countapiKey }: BeerProps) {
+export default function Beer({
+  countapiNamespace,
+  countapiKey,
+  names,
+}: BeerProps) {
   const cookieName = 'beer';
   const classes = useStyles();
   const [count, setCount] = useState(0);
@@ -101,7 +107,7 @@ export default function Beer({ countapiNamespace, countapiKey }: BeerProps) {
           className={classes.root}
         >
           <Grid item className={classes.pinnedList}>
-            <PinnedList />
+            <PinnedList items={names} />
           </Grid>
 
           <Grid item>
@@ -229,10 +235,17 @@ function getNextTrainingDay(): string {
 }
 
 export async function getStaticProps() {
+  const donors = new Donors(
+    process.env.X_REDIS_HOST,
+    parseInt(process.env.X_REDIS_PORT),
+    process.env.X_REDIS_PASSWORD
+  );
+
   return {
     props: {
       countapiNamespace: process.env.X_COUNT_API_NAMESPACE,
       countapiKey: process.env.X_COUNT_API_KEY,
+      names: await donors.getNames(),
     },
   };
 }
