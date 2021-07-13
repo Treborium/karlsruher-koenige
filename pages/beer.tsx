@@ -127,6 +127,7 @@ export default function Beer({
               <CircularProgress />
             )}
           </Grid>
+
           <Grid item>
             <ButtonGroup
               variant='contained'
