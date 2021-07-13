@@ -10,7 +10,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Head from 'next/head';
 
 import Layout from '../components/layout';
-import { getSongs, Song } from '../lib/songs';
+import { getSongs, SongMetaData } from '../lib/songs';
 
 const useStyles = makeStyles({
   paper: {
@@ -26,7 +26,7 @@ const useStyles = makeStyles({
 });
 
 interface SongProps {
-  songs: Song[];
+  songs: SongMetaData[];
 }
 
 export default function Songs({ songs }: SongProps) {

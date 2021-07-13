@@ -4,8 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
 
 import Layout from '../../components/layout';
-import { getStaticFileData, getSongsDirectory } from '../../lib/static-file';
-import { getSongsPaths } from '../../lib/songs';
+import { getSongData, getSongsPaths } from '../../lib/songs';
 
 const useStyles = makeStyles({
   lyrics: {
@@ -46,10 +45,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const songData = await getStaticFileData(
-    params.id as string,
-    getSongsDirectory()
-  );
+  const songData = await getSongData(params.id as string);
   return {
     props: {
       songData,

@@ -1,11 +1,18 @@
-export interface Song {
+import { promises as fs } from 'fs';
+import path from 'path';
+
+export interface SongMetaData {
   title: string;
   lyricsFile: string;
   priority?: number;
   spotifyLink?: string;
 }
 
-const songs: Song[] = [
+export interface Song extends SongMetaData {
+  content: string;
+}
+
+const songs: SongMetaData[] = [
   {
     title: 'Königslied',
     lyricsFile: 'Königslied',
@@ -35,6 +42,16 @@ export function getSongsPaths() {
   });
 }
 
-export function getSongs(): Song[] {
+export function getSongs(): SongMetaData[] {
   return songs;
+}
+
+export async function getSongData(id: string): Promise<Song> {
+  const directoryPath = path.join(process.cwd(), 'songs');
+  const filePath = path.join(directoryPath, id);
+  const fileContent = await fs.readFile(filePath, 'utf8');
+
+  const song = songs.find((s) => s.title === id);
+
+  return { ...song, ...{ content: fileContent } };
 }
