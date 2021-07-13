@@ -17,6 +17,7 @@ import Layout from '../components/layout';
 import AlertSnackbar from '../components/alert-snackbar';
 import ConfirmationDialog from '../components/confirmation-dialog';
 import PinnedList from '../components/pinned-list';
+import Show from '../components/show';
 import { Counter } from '../lib/counter';
 import Donors from '../lib/donors';
 
@@ -88,7 +89,10 @@ export default function Beer({
         .catch((error) => console.error(error));
     }
 
-    setHasValidCookie(isLessThanADay(localStorage.getItem(cookieName)));
+    const beerCookie = localStorage.getItem(cookieName);
+    if (beerCookie) {
+      setHasValidCookie(isLessThanADay(beerCookie));
+    }
   });
 
   return (
@@ -129,20 +133,23 @@ export default function Beer({
               color='primary'
               aria-label='split button'
             >
-              {hasValidCookie ? (
+              <Show
+                when={hasValidCookie}
+                fallback={
+                  <Button
+                    variant='contained'
+                    color='primary'
+                    size='large'
+                    onClick={handleClickRegister}
+                  >
+                    Ich bring' einen mit!
+                  </Button>
+                }
+              >
                 <Button variant='contained' onClick={handleClickRevoke}>
                   Doch nicht 😔
                 </Button>
-              ) : (
-                <Button
-                  variant='contained'
-                  color='primary'
-                  size='large'
-                  onClick={handleClickRegister}
-                >
-                  Ich bring' einen mit!
-                </Button>
-              )}
+              </Show>
               <Tooltip
                 arrow
                 interactive
@@ -209,7 +216,7 @@ export default function Beer({
 
 function isLessThanADay(timestamp: string): boolean {
   const oneDayInMillis = 864e5;
-  return timestamp && parseInt(timestamp) > Date.now() - oneDayInMillis;
+  return parseInt(timestamp) > Date.now() - oneDayInMillis;
 }
 
 function handleClose(
