@@ -121,11 +121,9 @@ export default function Beer({
           </Grid>
 
           <Grid item>
-            {countInitiliazed ? (
+            <Show when={countInitiliazed} fallback={<CircularProgress />}>
               <Typography variant='h2'>{count}</Typography>
-            ) : (
-              <CircularProgress />
-            )}
+            </Show>
           </Grid>
 
           <Grid item>
