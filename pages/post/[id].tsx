@@ -34,7 +34,7 @@ export default function Post({
         <title>{postData.title}</title>
         <meta name='viewport' content='initial-scale=1.0, width=device-width' />
       </Head>
-      <Layout heading={postData.title} currentPage='news'>
+      <Layout heading={postData.title} currentPage='news' showBackIcon>
         <Grid container justify='center'>
           <Typography variant='body1' className={classes.content}>
             {postData.content}

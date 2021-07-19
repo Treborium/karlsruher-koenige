@@ -28,7 +28,7 @@ export default function Song({
         <title>{songData.title}</title>
         <meta name='viewport' content='initial-scale=1.0, width=device-width' />
       </Head>
-      <Layout heading={songData.title} currentPage='songs'>
+      <Layout heading={songData.title} currentPage='songs' showBackIcon>
         <Typography variant='body2' className={classes.lyrics}>
           {songData.content}
         </Typography>
