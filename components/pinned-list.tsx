@@ -43,8 +43,8 @@ export default function PinnedList({ items }: PinnedListProps) {
         </ListSubheader>
       }
     >
-      {items.map((item) => (
-        <ListItem key={`item-${item}`}>
+      {items.map((item, index) => (
+        <ListItem key={`item-${item}-${index}`}>
           <ListItemAvatar>
             <Avatar
               src={`https://avatars.dicebear.com/api/micah/${item}.svg`}
