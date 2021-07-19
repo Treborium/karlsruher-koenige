@@ -114,11 +114,9 @@ export default function Beer({
             <PinnedList items={names} />
           </Grid>
 
-          <Grid item>
-            <Typography variant='h6'>
-              Kästen für {getNextTrainingDay()}:
-            </Typography>
-          </Grid>
+          <Typography variant='h6'>
+            Kästen für {getNextTrainingDay()}:
+          </Typography>
 
           <Grid item>
             <Show when={countInitiliazed} fallback={<CircularProgress />}>
@@ -126,48 +124,37 @@ export default function Beer({
             </Show>
           </Grid>
 
-          <Grid item>
-            <ButtonGroup
-              variant='contained'
-              color='primary'
-              aria-label='split button'
+          <ButtonGroup
+            variant='contained'
+            color='primary'
+            aria-label='contained primary button group'
+            size='large'
+          >
+            {hasValidCookie ? (
+              <Button onClick={handleClickRevoke}>Doch nicht 😔</Button>
+            ) : (
+              <Button onClick={handleClickRegister}>
+                Ich bring' einen mit!
+              </Button>
+            )}
+            <Tooltip
+              arrow
+              interactive
+              title='Mit dem Drücken des Buttons verpflichtest du dich, einen Kasten Bier (oder andere Getränke) zum nächsten Training mit zu bringen.'
+              open={openToolip}
+              onClose={() => {
+                setOpenTooltip(false);
+              }}
+              onOpen={() => {
+                setOpenTooltip(true);
+              }}
+              leaveTouchDelay={4000}
             >
-              <Show
-                when={hasValidCookie}
-                fallback={
-                  <Button
-                    variant='contained'
-                    color='primary'
-                    size='large'
-                    onClick={handleClickRegister}
-                  >
-                    Ich bring' einen mit!
-                  </Button>
-                }
-              >
-                <Button variant='contained' onClick={handleClickRevoke}>
-                  Doch nicht 😔
-                </Button>
-              </Show>
-              <Tooltip
-                arrow
-                interactive
-                title='Mit dem Drücken des Buttons verpflichtest du dich, einen Kasten Bier (oder andere Getränke) zum nächsten Training mit zu bringen.'
-                open={openToolip}
-                onClose={() => {
-                  setOpenTooltip(false);
-                }}
-                onOpen={() => {
-                  setOpenTooltip(true);
-                }}
-                leaveTouchDelay={4000}
-              >
-                <IconButton onClick={() => setOpenTooltip(true)}>
-                  <Icon className='far fa-question-circle' />
-                </IconButton>
-              </Tooltip>
-            </ButtonGroup>
-          </Grid>
+              <Button color='secondary' onClick={() => setOpenTooltip(true)}>
+                <Icon className='far fa-question-circle' />
+              </Button>
+            </Tooltip>
+          </ButtonGroup>
 
           <ConfirmationDialog
             open={openConfirmationDialog}
