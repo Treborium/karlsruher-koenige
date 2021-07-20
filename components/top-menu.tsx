@@ -97,7 +97,11 @@ export default function TopMenu(props: TopMenuProps) {
             </Grid>
           </MenuItem>
           <MenuItem onClick={handleClose}>Wanderkasten</MenuItem>
-          <MenuItem onClick={handleClose}>Impressum</MenuItem>
+          <MenuItem onClick={handleClose}>
+            <Link underline='none' color='textPrimary' href='/contact'>
+              Impressum
+            </Link>
+          </MenuItem>
         </Menu>
       </Toolbar>
     </AppBar>
