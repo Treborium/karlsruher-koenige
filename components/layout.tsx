@@ -1,29 +1,23 @@
-import { AppBar, Typography, Grid, IconButton, Icon } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { loadCSS } from 'fg-loadcss';
 import { useEffect } from 'react';
 
 import Menu from './menu';
-import Show from './show';
+import TopMenu from './top-menu';
 
 const useStyles = makeStyles({
   root: {
     minHeight: '100vh',
     width: '100vw',
   },
-  appBar: {
-    padding: '2vh 0',
-    marginBottom: '3vh',
-  },
   content: {
     maxWidth: '800px',
     flexGrow: 1,
     padding: '1vh 7vw',
   },
-  backIcon: {
-    color: '#FFF',
-  },
 });
+
 export interface LayoutProps {
   heading: string;
   currentPage: string;
@@ -33,8 +27,6 @@ export interface LayoutProps {
 
 export default function Layout(props: LayoutProps) {
   const classes = useStyles();
-
-  const navigateBack = () => history.back();
 
   useEffect(() => {
     const node = loadCSS(
@@ -49,20 +41,7 @@ export default function Layout(props: LayoutProps) {
 
   return (
     <Grid container direction='column'>
-      <AppBar position='static' className={classes.appBar}>
-        <Grid container justify='center' alignItems='center'>
-          <Show when={props.showBackIcon}>
-            <Grid item className={classes.backIcon}>
-              <IconButton color='inherit' onClick={navigateBack}>
-                <Icon className='fas fa-arrow-left' />
-              </IconButton>
-            </Grid>
-          </Show>
-          <Grid item>
-            <Typography variant='h6'>{props.heading}</Typography>
-          </Grid>
-        </Grid>
-      </AppBar>
+      <TopMenu heading={props.heading} showBackIcon={props.showBackIcon} />
       <Grid container justify='center'>
         <div className={classes.content}>{props.children}</div>
       </Grid>
