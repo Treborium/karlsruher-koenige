@@ -89,6 +89,7 @@ export default function TopMenu(props: TopMenuProps) {
                 underline='none'
                 color='textPrimary'
                 href='https://shop.spreadshirt.de/karlsruher-koenige'
+                target='_blank'
               >
                 Merch Shop
               </Link>
