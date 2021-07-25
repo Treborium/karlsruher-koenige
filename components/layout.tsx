@@ -6,6 +6,14 @@ import { useEffect } from 'react';
 import Menu from './menu';
 import TopMenu from './top-menu';
 
+export interface LayoutProps {
+  heading: string;
+  currentPage: string;
+  showBackIcon?: boolean;
+  noPadding?: boolean;
+  children?: React.ReactNode;
+}
+
 const useStyles = makeStyles({
   root: {
     minHeight: '100vh',
@@ -14,19 +22,12 @@ const useStyles = makeStyles({
   content: {
     maxWidth: '800px',
     flexGrow: 1,
-    padding: '1vh 7vw',
+    padding: (props: LayoutProps) => (props.noPadding ? 0 : '1vh 7vw'),
   },
 });
 
-export interface LayoutProps {
-  heading: string;
-  currentPage: string;
-  showBackIcon?: boolean;
-  children?: React.ReactNode;
-}
-
 export default function Layout(props: LayoutProps) {
-  const classes = useStyles();
+  const classes = useStyles(props);
 
   useEffect(() => {
     const node = loadCSS(

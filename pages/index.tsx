@@ -1,13 +1,7 @@
 import Layout from '../components/layout';
 import { createKey, getPosts, Message } from '../lib/posts';
 
-import {
-  Card,
-  CardContent,
-  Typography,
-  Grid,
-  CardActionArea,
-} from '@material-ui/core';
+import { Typography, List, ListItem, ListItemText } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Head from 'next/head';
 import moment from 'moment';
@@ -18,14 +12,11 @@ interface HomeProps {
 }
 
 const useStyles = makeStyles({
-  card: {
-    minHeight: '20vh',
-  },
-  divider: {
-    margin: '1vh 0',
-  },
-  content: {
-    marginTop: '2vh',
+  insetDivider: {
+    '& divider': {
+      variant: 'inset',
+      component: 'li',
+    },
   },
 });
 
@@ -39,29 +30,32 @@ export default function Home({ messages }: HomeProps) {
         <title>{heading}</title>
         <meta name='viewport' content='initial-scale=1.0, width=device-width' />
       </Head>
-      <Layout heading={heading} currentPage='news'>
-        <Grid container direction='column' spacing={2}>
+      <Layout heading={heading} currentPage='news' noPadding>
+        <List>
           {messages.map(({ subject, text, receivedOn }) => (
-            <Grid item key={subject}>
-              <Card>
-                <CardActionArea
-                  className={classes.card}
-                  href={`post/${createKey(subject)}`}
-                >
-                  <CardContent>
-                    <Typography variant='body1'>{subject}</Typography>
-                    <Typography variant='body2' color='textSecondary'>
+            <ListItem
+              className={classes.insetDivider}
+              alignItems='flex-start'
+              button
+              divider
+              onClick={() => {
+                window.location.href = `post/${createKey(subject)}`;
+              }}
+            >
+              <ListItemText
+                primary={subject}
+                secondary={
+                  <>
+                    <Typography variant='body2'>
                       {moment(receivedOn).locale('de').calendar()}
                     </Typography>
-                    <Typography variant='body2' className={classes.content}>
-                      {trimToLength(text)}
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
-              </Card>
-            </Grid>
+                    {trimToLength(text)}
+                  </>
+                }
+              />
+            </ListItem>
           ))}
-        </Grid>
+        </List>
       </Layout>
     </>
   );
