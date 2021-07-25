@@ -11,6 +11,7 @@ import {
 import { makeStyles } from '@material-ui/core/styles';
 import Head from 'next/head';
 import moment from 'moment';
+import 'moment/locale/de';
 
 interface HomeProps {
   messages: Message[];
