@@ -1,16 +1,23 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
 import Head from 'next/head';
-import { makeStyles } from '@material-ui/core/styles';
-import { Typography } from '@material-ui/core';
+import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
+import { Typography, Fab, Icon } from '@material-ui/core';
 
 import Layout from '../../components/layout';
 import { getSongData, getSongsPaths } from '../../lib/songs';
 
-const useStyles = makeStyles({
-  lyrics: {
-    whiteSpace: 'pre-wrap',
-  },
-});
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    lyrics: {
+      whiteSpace: 'pre-wrap',
+    },
+    fab: {
+      position: 'fixed',
+      bottom: theme.spacing(9),
+      right: theme.spacing(2),
+    },
+  })
+);
 
 export default function Song({
   songData,
@@ -18,6 +25,7 @@ export default function Song({
   songData: {
     title: string;
     content: string;
+    spotifyLink?: string;
   };
 }) {
   const classes = useStyles();
@@ -32,6 +40,16 @@ export default function Song({
         <Typography variant='body2' className={classes.lyrics}>
           {songData.content}
         </Typography>
+        {songData.spotifyLink && (
+          <Fab
+            color='primary'
+            aria-label='open song in spotify'
+            className={classes.fab}
+            href={songData.spotifyLink}
+          >
+            <Icon className='fab fa-spotify' />
+          </Fab>
+        )}
       </Layout>
     </>
   );
