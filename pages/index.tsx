@@ -13,16 +13,17 @@ interface HomeProps {
 
 const useStyles = makeStyles({
   insetDivider: {
-    '& divider': {
-      variant: 'inset',
-      component: 'li',
-    },
+    variant: 'inset',
+    component: 'li',
   },
 });
 
 export default function Home({ messages }: HomeProps) {
   const classes = useStyles();
   const heading = 'Neuigkeiten';
+  const sortDescending = (a: Message, b: Message) =>
+    moment(b.receivedOn).valueOf() - moment(a.receivedOn).valueOf();
+  const messagesSortedByDate = messages.sort(sortDescending);
 
   return (
     <>
@@ -32,9 +33,9 @@ export default function Home({ messages }: HomeProps) {
       </Head>
       <Layout heading={heading} currentPage='news' noPadding>
         <List>
-          {messages.map(({ subject, text, receivedOn }) => (
+          {messagesSortedByDate.map(({ subject, text, receivedOn }) => (
             <ListItem
-              className={classes.insetDivider}
+              classes={{ divider: classes.insetDivider }}
               alignItems='flex-start'
               button
               divider
@@ -46,7 +47,7 @@ export default function Home({ messages }: HomeProps) {
                 primary={subject}
                 secondary={
                   <>
-                    <Typography variant='body2'>
+                    <Typography variant='subtitle2'>
                       {moment(receivedOn).locale('de').calendar()}
                     </Typography>
                     {trimToLength(text)}
