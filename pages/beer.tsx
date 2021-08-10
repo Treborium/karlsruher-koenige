@@ -5,7 +5,6 @@ import {
   Typography,
   CircularProgress,
   Icon,
-  IconButton,
   ButtonGroup,
   Tooltip,
 } from '@material-ui/core';
@@ -34,15 +33,18 @@ const useStyles = makeStyles({
 interface BeerProps {
   countapiNamespace: string;
   countapiKey: string;
+  donorsUrl: string;
   names: string[];
 }
 
 export default function Beer({
   countapiNamespace,
   countapiKey,
+  donorsUrl,
   names,
 }: BeerProps) {
   const cookieName = 'beer';
+  const donorNameCookieKey = 'donor';
   const classes = useStyles();
   const [count, setCount] = useState(0);
   const [countInitiliazed, setCountInitialized] = useState(false);
@@ -53,6 +55,8 @@ export default function Beer({
   const [openConfirmationDialog, setOpenConfirmationDialog] = useState(false);
   const [openToolip, setOpenTooltip] = useState(false);
   const [name, setName] = useState('');
+  const [donors, setDonors] = useState(names);
+  const donorsClient = new Donors(donorsUrl);
   const counter = new Counter(countapiNamespace, countapiKey, setCount);
 
   const handleClickRegister = () => {
@@ -64,15 +68,29 @@ export default function Beer({
   };
 
   const handleClickRevoke = async () => {
+    const nameCookieValue: string | null =
+      localStorage.getItem(donorNameCookieKey);
+    if (nameCookieValue) {
+      localStorage.removeItem(donorNameCookieKey);
+      const updatedDonors = await donorsClient.removeName(nameCookieValue);
+      setDonors(updatedDonors);
+    }
+
     localStorage.removeItem(cookieName);
     setHasValidCookie(false);
+
     await counter.decrement();
   };
 
   const incrementCount = async () => {
     try {
       await counter.increment();
+      console.log(name);
+      const updatedDonors = await donorsClient.addName(name);
+      setDonors(updatedDonors);
+
       localStorage.setItem(cookieName, Date.now().toString());
+      localStorage.setItem(donorNameCookieKey, name);
       setOpenSuccess(true);
       setOpenConfirmationDialog(false);
     } catch (error) {
@@ -111,7 +129,7 @@ export default function Beer({
           className={classes.root}
         >
           <Grid item className={classes.pinnedList}>
-            <PinnedList items={names} />
+            <PinnedList items={donors} />
           </Grid>
 
           <Typography variant='h6'>
@@ -228,16 +246,13 @@ function getNextTrainingDay(): string {
 }
 
 export async function getStaticProps() {
-  const donors = new Donors(
-    process.env.X_REDIS_HOST,
-    parseInt(process.env.X_REDIS_PORT),
-    process.env.X_REDIS_PASSWORD
-  );
+  const donors = new Donors(process.env.X_DONORS_URL);
 
   return {
     props: {
       countapiNamespace: process.env.X_COUNT_API_NAMESPACE,
       countapiKey: process.env.X_COUNT_API_KEY,
+      donorsUrl: process.env.X_DONORS_URL,
       names: await donors.getNames(),
     },
   };

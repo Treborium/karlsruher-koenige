@@ -1,21 +1,43 @@
-import { createNodeRedisClient, WrappedNodeRedisClient } from 'handy-redis';
-
 export default class Donors {
-  redis: WrappedNodeRedisClient;
-  key: string;
+  url: string;
 
-  constructor(host: string, port: number, password: string) {
-    this.redis = createNodeRedisClient({ host, port, password });
-
-    this.key = 'names';
+  constructor(url: string) {
+    this.url = url;
   }
 
-  addName(name: string) {
-    this.redis.rpush(this.key, name);
+  async addName(name: string): Promise<string[]> {
+    const response = await fetch(this.url + '/donor', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ name }),
+    });
+
+    const json = await response.json();
+    console.log(json['donors']);
+    return json['donors'];
+  }
+
+  async removeName(name: string): Promise<string[]> {
+    const response = await fetch(this.url + '/donor', {
+      method: 'DELETE',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ name }),
+    });
+
+    const json = await response.json();
+    console.log(json['donors']);
+    return json['donors'];
   }
 
   async getNames(): Promise<string[]> {
-    const length = await this.redis.llen(this.key);
-    return this.redis.lrange(this.key, 0, length);
+    const response = await fetch(this.url + '/donors');
+    const json = await response.json();
+    return json['donors'];
   }
 }
