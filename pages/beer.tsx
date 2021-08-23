@@ -39,7 +39,7 @@ export default function Beer({ accessKeyId, secretAccessKey }: BeerProps) {
   const classes = useStyles();
   const [count, setCount] = useState(0);
   const [countInitiliazed, setCountInitialized] = useState(false);
-  const [hasValidCookie, setHasValidCookie] = useState(false);
+  const [isCookieExpired, setIsCookieExpired] = useState(false);
   const [openSuccess, setOpenSuccess] = useState(false);
   const [openError, setOpenError] = useState(false);
   const [openCookieError, setOpenCookieError] = useState(false);
@@ -49,48 +49,11 @@ export default function Beer({ accessKeyId, secretAccessKey }: BeerProps) {
   const [donors, setDonors] = useState<string[]>([]);
   const donorsClient = new Donors(accessKeyId, secretAccessKey);
 
-  const handleClickRegister = () => {
+  useEffect(() => {
     const cookieValue: string | null = localStorage.getItem(cookieKey);
     if (cookieValue) {
       const timestamp = cookieValue.split('-')[1];
-
-      if (isOverADay(timestamp)) {
-        setOpenConfirmationDialog(true);
-      } else {
-        setOpenError(true);
-      }
-    }
-  };
-
-  const handleClickRevoke = async () => {
-    const cookieValue: string | null = localStorage.getItem(cookieKey);
-    if (cookieValue) {
-      localStorage.removeItem(cookieKey);
-      await donorsClient.removeName(cookieValue);
-    }
-
-    setHasValidCookie(false);
-  };
-
-  const incrementCount = async () => {
-    try {
-      const id = `${name}-${Date.now()}`;
-      await donorsClient.addName(id, name);
-      console.log(id);
-
-      localStorage.setItem(cookieKey, id);
-      setOpenSuccess(true);
-      setOpenConfirmationDialog(false);
-    } catch (error) {
-      console.error('Could not register beer due to error. error=', error);
-      setOpenCookieError(true);
-    }
-  };
-
-  useEffect(() => {
-    const beerCookie: string | null = localStorage.getItem(cookieKey);
-    if (beerCookie) {
-      setHasValidCookie(isOverADay(beerCookie));
+      setIsCookieExpired(isOverADay(timestamp));
     }
 
     donorsClient
@@ -105,7 +68,33 @@ export default function Beer({ accessKeyId, secretAccessKey }: BeerProps) {
       .getNames()
       .then(setDonors)
       .catch((error) => console.error(error));
-  }, [hasValidCookie]);
+  });
+
+  const revokeDonation = async () => {
+    const cookieValue: string | null = localStorage.getItem(cookieKey);
+    if (cookieValue) {
+      localStorage.removeItem(cookieKey);
+      await donorsClient.removeName(cookieValue);
+    }
+
+    setIsCookieExpired(true);
+  };
+
+  const registerDonation = async () => {
+    try {
+      const id = `${name}-${Date.now()}`;
+      await donorsClient.addName(id, name);
+      console.log(id);
+
+      localStorage.setItem(cookieKey, id);
+      setIsCookieExpired(false);
+      setOpenSuccess(true);
+      setOpenConfirmationDialog(false);
+    } catch (error) {
+      console.error('Could not register beer due to error. error=', error);
+      setOpenCookieError(true);
+    }
+  };
 
   return (
     <>
@@ -142,12 +131,12 @@ export default function Beer({ accessKeyId, secretAccessKey }: BeerProps) {
             aria-label='contained primary button group'
             size='large'
           >
-            {hasValidCookie ? (
-              <Button onClick={handleClickRevoke}>Doch nicht 😔</Button>
-            ) : (
-              <Button onClick={handleClickRegister}>
+            {isCookieExpired ? (
+              <Button onClick={() => setOpenConfirmationDialog(true)}>
                 Ich bring' einen mit!
               </Button>
+            ) : (
+              <Button onClick={revokeDonation}>Doch nicht 😔</Button>
             )}
             <Tooltip
               arrow
@@ -172,7 +161,7 @@ export default function Beer({ accessKeyId, secretAccessKey }: BeerProps) {
             open={openConfirmationDialog}
             onClose={() => setOpenConfirmationDialog(false)}
             onClickCancel={() => setOpenConfirmationDialog(false)}
-            onClickConfirm={incrementCount}
+            onClickConfirm={registerDonation}
             setInput={setName}
           />
 
