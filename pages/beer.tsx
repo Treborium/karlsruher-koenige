@@ -85,9 +85,8 @@ export default function Beer({
   const incrementCount = async () => {
     try {
       await counter.increment();
+      await donorsClient.addName(name);
       console.log(name);
-      const updatedDonors = await donorsClient.addName(name);
-      setDonors(updatedDonors);
 
       localStorage.setItem(cookieName, Date.now().toString());
       localStorage.setItem(donorNameCookieKey, name);
@@ -105,11 +104,6 @@ export default function Beer({
         .getValue()
         .then(() => setCountInitialized(true))
         .catch((error) => console.error(error));
-
-      donorsClient
-        .getNames()
-        .then(setDonors)
-        .catch((error) => console.error(error));
     }
 
     const beerCookie = localStorage.getItem(cookieName);
@@ -117,6 +111,13 @@ export default function Beer({
       setHasValidCookie(isLessThanADay(beerCookie));
     }
   });
+
+  useEffect(() => {
+    donorsClient
+      .getNames()
+      .then(setDonors)
+      .catch((error) => console.error(error));
+  }, [hasValidCookie]);
 
   return (
     <>
