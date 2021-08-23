@@ -17,7 +17,6 @@ import AlertSnackbar from '../components/alert-snackbar';
 import ConfirmationDialog from '../components/confirmation-dialog';
 import PinnedList from '../components/pinned-list';
 import Show from '../components/show';
-import { Counter } from '../lib/counter';
 import Donors from '../lib/donors';
 
 const useStyles = makeStyles({
@@ -31,18 +30,11 @@ const useStyles = makeStyles({
 });
 
 interface BeerProps {
-  countapiNamespace: string;
-  countapiKey: string;
   accessKeyId: string;
   secretAccessKey: string;
 }
 
-export default function Beer({
-  countapiNamespace,
-  countapiKey,
-  accessKeyId,
-  secretAccessKey,
-}: BeerProps) {
+export default function Beer({ accessKeyId, secretAccessKey }: BeerProps) {
   const cookieKey = 'donorId';
   const classes = useStyles();
   const [count, setCount] = useState(0);
@@ -250,8 +242,6 @@ function getNextTrainingDay(): string {
 export async function getStaticProps() {
   return {
     props: {
-      countapiNamespace: process.env.X_COUNT_API_NAMESPACE,
-      countapiKey: process.env.X_COUNT_API_KEY,
       accessKeyId: process.env.X_ACCESS_KEY_ID!,
       secretAccessKey: process.env.X_SECRET_ACCESS_KEY!,
     },
