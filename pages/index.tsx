@@ -4,6 +4,7 @@ import { createKey, getPosts, Message } from '../lib/posts';
 import { Typography, List, ListItem, ListItemText } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Head from 'next/head';
+import { GetStaticProps } from 'next';
 import moment from 'moment';
 import 'moment/locale/de';
 
@@ -62,13 +63,14 @@ export default function Home({ messages }: HomeProps) {
   );
 }
 
-export async function getStaticProps() {
+export const getStaticProps: GetStaticProps = async () => {
   return {
     props: {
       messages: await getPosts(),
     },
+    revalidate: moment().minutes(10).seconds(),
   };
-}
+};
 
 function trimToLength(str: string, maxLength = 85): string {
   if (str.length > maxLength) {
