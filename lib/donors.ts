@@ -61,4 +61,9 @@ export default class Donors {
       return [];
     }
   }
+
+  async getCount(): Promise<number> {
+    const names = await this.getNames();
+    return names.length;
+  }
 }

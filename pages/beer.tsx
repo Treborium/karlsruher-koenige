@@ -43,8 +43,7 @@ export default function Beer({
   accessKeyId,
   secretAccessKey,
 }: BeerProps) {
-  const cookieName = 'beer';
-  const donorNameCookieKey = 'donor';
+  const cookieKey = 'donorId';
   const classes = useStyles();
   const [count, setCount] = useState(0);
   const [countInitiliazed, setCountInitialized] = useState(false);
@@ -57,39 +56,37 @@ export default function Beer({
   const [name, setName] = useState('');
   const [donors, setDonors] = useState<string[]>([]);
   const donorsClient = new Donors(accessKeyId, secretAccessKey);
-  const counter = new Counter(countapiNamespace, countapiKey, setCount);
 
   const handleClickRegister = () => {
-    if (isLessThanADay(localStorage.getItem(cookieName))) {
-      setOpenError(true);
-    } else {
-      setOpenConfirmationDialog(true);
+    const cookieValue: string | null = localStorage.getItem(cookieKey);
+    if (cookieValue) {
+      const timestamp = cookieValue.split('-')[1];
+
+      if (isOverADay(timestamp)) {
+        setOpenConfirmationDialog(true);
+      } else {
+        setOpenError(true);
+      }
     }
   };
 
   const handleClickRevoke = async () => {
-    const nameCookieValue: string | null =
-      localStorage.getItem(donorNameCookieKey);
-    if (nameCookieValue) {
-      localStorage.removeItem(donorNameCookieKey);
-      await donorsClient.removeName(nameCookieValue);
+    const cookieValue: string | null = localStorage.getItem(cookieKey);
+    if (cookieValue) {
+      localStorage.removeItem(cookieKey);
+      await donorsClient.removeName(cookieValue);
     }
 
-    localStorage.removeItem(cookieName);
     setHasValidCookie(false);
-
-    await counter.decrement();
   };
 
   const incrementCount = async () => {
     try {
-      await counter.increment();
       const id = `${name}-${Date.now()}`;
       await donorsClient.addName(id, name);
-      console.log(name);
+      console.log(id);
 
-      localStorage.setItem(cookieName, Date.now().toString());
-      localStorage.setItem(donorNameCookieKey, id);
+      localStorage.setItem(cookieKey, id);
       setOpenSuccess(true);
       setOpenConfirmationDialog(false);
     } catch (error) {
@@ -99,20 +96,19 @@ export default function Beer({
   };
 
   useEffect(() => {
-    if (!countInitiliazed) {
-      counter
-        .getValue()
-        .then(() => setCountInitialized(true))
-        .catch((error) => console.error(error));
-    }
-
-    const beerCookie = localStorage.getItem(cookieName);
+    const beerCookie: string | null = localStorage.getItem(cookieKey);
     if (beerCookie) {
-      setHasValidCookie(isLessThanADay(beerCookie));
+      setHasValidCookie(isOverADay(beerCookie));
     }
-  });
 
-  useEffect(() => {
+    donorsClient
+      .getCount()
+      .then((currentCount) => {
+        setCountInitialized(true);
+        setCount(currentCount);
+      })
+      .catch((error) => console.error(error));
+
     donorsClient
       .getNames()
       .then(setDonors)
@@ -224,9 +220,9 @@ export default function Beer({
   );
 }
 
-function isLessThanADay(timestamp: string): boolean {
+function isOverADay(timestamp: string): boolean {
   const oneDayInMillis = 864e5;
-  return parseInt(timestamp) > Date.now() - oneDayInMillis;
+  return parseInt(timestamp) < Date.now() - oneDayInMillis;
 }
 
 function handleClose(
