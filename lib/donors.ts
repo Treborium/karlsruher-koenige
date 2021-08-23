@@ -2,7 +2,7 @@ import {
   DynamoDBClient,
   ScanCommand,
   PutItemCommand,
-  AttributeValue,
+  DeleteItemCommand,
 } from '@aws-sdk/client-dynamodb';
 import { Credentials } from 'aws-sdk';
 export default class Donors {
@@ -19,11 +19,11 @@ export default class Donors {
     this.tableName = 'beer-donors';
   }
 
-  async addName(name: string) {
+  async addName(id: string, name: string) {
     const command = new PutItemCommand({
       TableName: this.tableName,
       Item: {
-        id: { S: `${name}-${Date.now()}` },
+        id: { S: id },
         name: { S: name },
       },
     });
@@ -31,12 +31,23 @@ export default class Donors {
     try {
       await this.dynamodb.send(command);
     } catch (error) {
-      console.log('Could not fetch beer donors from DB. error=', error);
+      console.log(`Could not add donor "${name}". error=`, error);
     }
   }
 
-  async removeName(name: string): Promise<string[]> {
-    return [];
+  async removeName(id: string) {
+    const command = new DeleteItemCommand({
+      TableName: this.tableName,
+      Key: {
+        id: { S: id },
+      },
+    });
+
+    try {
+      await this.dynamodb.send(command);
+    } catch (error) {
+      console.log(`Could not delete donor "${id}". error=`, error);
+    }
   }
 
   async getNames(): Promise<string[]> {

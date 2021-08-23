@@ -72,8 +72,7 @@ export default function Beer({
       localStorage.getItem(donorNameCookieKey);
     if (nameCookieValue) {
       localStorage.removeItem(donorNameCookieKey);
-      const updatedDonors = await donorsClient.removeName(nameCookieValue);
-      setDonors(updatedDonors);
+      await donorsClient.removeName(nameCookieValue);
     }
 
     localStorage.removeItem(cookieName);
@@ -85,11 +84,12 @@ export default function Beer({
   const incrementCount = async () => {
     try {
       await counter.increment();
-      await donorsClient.addName(name);
+      const id = `${name}-${Date.now()}`;
+      await donorsClient.addName(id, name);
       console.log(name);
 
       localStorage.setItem(cookieName, Date.now().toString());
-      localStorage.setItem(donorNameCookieKey, name);
+      localStorage.setItem(donorNameCookieKey, id);
       setOpenSuccess(true);
       setOpenConfirmationDialog(false);
     } catch (error) {
