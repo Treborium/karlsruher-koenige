@@ -33,14 +33,15 @@ const useStyles = makeStyles({
 interface BeerProps {
   countapiNamespace: string;
   countapiKey: string;
-  donorsUrl: string;
-  names: string[];
+  accessKeyId: string;
+  secretAccessKey: string;
 }
 
 export default function Beer({
   countapiNamespace,
   countapiKey,
-  donorsUrl,
+  accessKeyId,
+  secretAccessKey,
 }: BeerProps) {
   const cookieName = 'beer';
   const donorNameCookieKey = 'donor';
@@ -55,7 +56,7 @@ export default function Beer({
   const [openToolip, setOpenTooltip] = useState(false);
   const [name, setName] = useState('');
   const [donors, setDonors] = useState<string[]>([]);
-  const donorsClient = new Donors(donorsUrl);
+  const donorsClient = new Donors(accessKeyId, secretAccessKey);
   const counter = new Counter(countapiNamespace, countapiKey, setCount);
 
   const handleClickRegister = () => {
@@ -104,12 +105,12 @@ export default function Beer({
         .getValue()
         .then(() => setCountInitialized(true))
         .catch((error) => console.error(error));
-    }
 
-    donorsClient
-      .getNames()
-      .then(setDonors)
-      .catch((error) => console.error(error));
+      donorsClient
+        .getNames()
+        .then(setDonors)
+        .catch((error) => console.error(error));
+    }
 
     const beerCookie = localStorage.getItem(cookieName);
     if (beerCookie) {
@@ -250,13 +251,12 @@ function getNextTrainingDay(): string {
 }
 
 export async function getStaticProps() {
-  const donors = new Donors(process.env.X_DONORS_URL);
-
   return {
     props: {
       countapiNamespace: process.env.X_COUNT_API_NAMESPACE,
       countapiKey: process.env.X_COUNT_API_KEY,
-      donorsUrl: process.env.X_DONORS_URL,
+      accessKeyId: process.env.X_ACCESS_KEY_ID!,
+      secretAccessKey: process.env.X_SECRET_ACCESS_KEY!,
     },
   };
 }
