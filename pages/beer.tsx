@@ -68,7 +68,7 @@ export default function Beer({ accessKeyId, secretAccessKey }: BeerProps) {
       .getNames()
       .then(setDonors)
       .catch((error) => console.error(error));
-  });
+  }, [donorsClient]);
 
   const revokeDonation = async () => {
     const cookieValue: string | null = localStorage.getItem(cookieKey);
@@ -133,7 +133,7 @@ export default function Beer({ accessKeyId, secretAccessKey }: BeerProps) {
           >
             {isCookieExpired ? (
               <Button onClick={() => setOpenConfirmationDialog(true)}>
-                Ich bring' einen mit!
+                Ich bring&apos; einen mit!
               </Button>
             ) : (
               <Button onClick={revokeDonation}>Doch nicht 😔</Button>
