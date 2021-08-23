@@ -41,7 +41,6 @@ export default function Beer({
   countapiNamespace,
   countapiKey,
   donorsUrl,
-  names,
 }: BeerProps) {
   const cookieName = 'beer';
   const donorNameCookieKey = 'donor';
@@ -55,7 +54,7 @@ export default function Beer({
   const [openConfirmationDialog, setOpenConfirmationDialog] = useState(false);
   const [openToolip, setOpenTooltip] = useState(false);
   const [name, setName] = useState('');
-  const [donors, setDonors] = useState(names);
+  const [donors, setDonors] = useState<string[]>([]);
   const donorsClient = new Donors(donorsUrl);
   const counter = new Counter(countapiNamespace, countapiKey, setCount);
 
@@ -106,6 +105,11 @@ export default function Beer({
         .then(() => setCountInitialized(true))
         .catch((error) => console.error(error));
     }
+
+    donorsClient
+      .getNames()
+      .then(setDonors)
+      .catch((error) => console.error(error));
 
     const beerCookie = localStorage.getItem(cookieName);
     if (beerCookie) {
@@ -253,7 +257,6 @@ export async function getStaticProps() {
       countapiNamespace: process.env.X_COUNT_API_NAMESPACE,
       countapiKey: process.env.X_COUNT_API_KEY,
       donorsUrl: process.env.X_DONORS_URL,
-      names: await donors.getNames(),
     },
   };
 }
