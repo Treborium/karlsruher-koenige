@@ -36,6 +36,7 @@ export default function Home({ messages }: HomeProps) {
         <List>
           {messagesSortedByDate.map(({ subject, text, receivedOn }) => (
             <ListItem
+              key={`${subject}-${receivedOn}`}
               classes={{ divider: classes.insetDivider }}
               alignItems='flex-start'
               button

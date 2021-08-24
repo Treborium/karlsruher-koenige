@@ -1,43 +1,69 @@
+import {
+  DynamoDBClient,
+  ScanCommand,
+  PutItemCommand,
+  DeleteItemCommand,
+} from '@aws-sdk/client-dynamodb';
+import { Credentials } from 'aws-sdk';
 export default class Donors {
-  url: string;
+  dynamodb: DynamoDBClient;
+  tableName: string;
 
-  constructor(url: string) {
-    this.url = url;
-  }
-
-  async addName(name: string): Promise<string[]> {
-    const response = await fetch(this.url + '/donor', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ name }),
+  constructor(accessKeyId: string, secretAccessKey: string) {
+    const credentials = new Credentials({
+      accessKeyId,
+      secretAccessKey,
     });
 
-    const json = await response.json();
-    console.log(json['donors']);
-    return json['donors'];
+    this.dynamodb = new DynamoDBClient({ region: 'eu-central-1', credentials });
+    this.tableName = 'beer-donors';
   }
 
-  async removeName(name: string): Promise<string[]> {
-    const response = await fetch(this.url + '/donor', {
-      method: 'DELETE',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
+  async addName(id: string, name: string) {
+    const command = new PutItemCommand({
+      TableName: this.tableName,
+      Item: {
+        id: { S: id },
+        name: { S: name },
       },
-      body: JSON.stringify({ name }),
     });
 
-    const json = await response.json();
-    console.log(json['donors']);
-    return json['donors'];
+    try {
+      await this.dynamodb.send(command);
+    } catch (error) {
+      console.log(`Could not add donor "${name}". error=`, error);
+    }
+  }
+
+  async removeName(id: string) {
+    const command = new DeleteItemCommand({
+      TableName: this.tableName,
+      Key: {
+        id: { S: id },
+      },
+    });
+
+    try {
+      await this.dynamodb.send(command);
+    } catch (error) {
+      console.log(`Could not delete donor "${id}". error=`, error);
+    }
   }
 
   async getNames(): Promise<string[]> {
-    const response = await fetch(this.url + '/donors');
-    const json = await response.json();
-    return json['donors'];
+    const command = new ScanCommand({ TableName: this.tableName });
+
+    try {
+      const result = await this.dynamodb.send(command);
+      return result.Items.map((item) => item.name.S);
+    } catch (error) {
+      console.log('Could not fetch beer donors from DB. error=', error);
+      return [];
+    }
+  }
+
+  async getCount(): Promise<number> {
+    const names = await this.getNames();
+    return names.length;
   }
 }

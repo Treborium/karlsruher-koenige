@@ -1,4 +1,4 @@
-import { useState, useEffect, Dispatch, SetStateAction } from 'react';
+import { useState, useEffect, Dispatch, SetStateAction, useMemo } from 'react';
 import {
   Button,
   Grid,
@@ -17,7 +17,6 @@ import AlertSnackbar from '../components/alert-snackbar';
 import ConfirmationDialog from '../components/confirmation-dialog';
 import PinnedList from '../components/pinned-list';
 import Show from '../components/show';
-import { Counter } from '../lib/counter';
 import Donors from '../lib/donors';
 
 const useStyles = makeStyles({
@@ -31,66 +30,67 @@ const useStyles = makeStyles({
 });
 
 interface BeerProps {
-  countapiNamespace: string;
-  countapiKey: string;
-  donorsUrl: string;
-  names: string[];
+  accessKeyId: string;
+  secretAccessKey: string;
 }
 
-export default function Beer({
-  countapiNamespace,
-  countapiKey,
-  donorsUrl,
-  names,
-}: BeerProps) {
-  const cookieName = 'beer';
-  const donorNameCookieKey = 'donor';
+export default function Beer({ accessKeyId, secretAccessKey }: BeerProps) {
+  const cookieKey = 'donorId';
   const classes = useStyles();
   const [count, setCount] = useState(0);
   const [countInitiliazed, setCountInitialized] = useState(false);
-  const [hasValidCookie, setHasValidCookie] = useState(false);
+  const [isCookieExpired, setIsCookieExpired] = useState(false);
   const [openSuccess, setOpenSuccess] = useState(false);
   const [openError, setOpenError] = useState(false);
   const [openCookieError, setOpenCookieError] = useState(false);
   const [openConfirmationDialog, setOpenConfirmationDialog] = useState(false);
   const [openToolip, setOpenTooltip] = useState(false);
   const [name, setName] = useState('');
-  const [donors, setDonors] = useState(names);
-  const donorsClient = new Donors(donorsUrl);
-  const counter = new Counter(countapiNamespace, countapiKey, setCount);
+  const [donors, setDonors] = useState<string[]>([]);
+  const donorsClient = useMemo(
+    () => new Donors(accessKeyId, secretAccessKey),
+    [accessKeyId, secretAccessKey]
+  );
 
-  const handleClickRegister = () => {
-    if (isLessThanADay(localStorage.getItem(cookieName))) {
-      setOpenError(true);
-    } else {
-      setOpenConfirmationDialog(true);
-    }
-  };
-
-  const handleClickRevoke = async () => {
-    const nameCookieValue: string | null =
-      localStorage.getItem(donorNameCookieKey);
-    if (nameCookieValue) {
-      localStorage.removeItem(donorNameCookieKey);
-      const updatedDonors = await donorsClient.removeName(nameCookieValue);
-      setDonors(updatedDonors);
+  useEffect(() => {
+    const cookieValue: string | null = localStorage.getItem(cookieKey);
+    if (cookieValue) {
+      const timestamp = cookieValue.split('-')[1];
+      setIsCookieExpired(isOverADay(timestamp));
     }
 
-    localStorage.removeItem(cookieName);
-    setHasValidCookie(false);
+    donorsClient
+      .getCount()
+      .then((currentCount) => {
+        setCountInitialized(true);
+        setCount(currentCount);
+      })
+      .catch((error) => console.error(error));
 
-    await counter.decrement();
+    donorsClient
+      .getNames()
+      .then(setDonors)
+      .catch((error) => console.error(error));
+  }, [donorsClient]);
+
+  const revokeDonation = async () => {
+    const cookieValue: string | null = localStorage.getItem(cookieKey);
+    if (cookieValue) {
+      localStorage.removeItem(cookieKey);
+      await donorsClient.removeName(cookieValue);
+    }
+
+    setIsCookieExpired(true);
   };
 
-  const incrementCount = async () => {
+  const registerDonation = async () => {
     try {
-      await counter.increment();
-      console.log(name);
-      const updatedDonors = await donorsClient.addName(name);
-      setDonors(updatedDonors);
+      const id = `${name}-${Date.now()}`;
+      await donorsClient.addName(id, name);
+      console.log(id);
 
-      localStorage.setItem(cookieName, Date.now().toString());
-      localStorage.setItem(donorNameCookieKey, name);
+      localStorage.setItem(cookieKey, id);
+      setIsCookieExpired(false);
       setOpenSuccess(true);
       setOpenConfirmationDialog(false);
     } catch (error) {
@@ -98,20 +98,6 @@ export default function Beer({
       setOpenCookieError(true);
     }
   };
-
-  useEffect(() => {
-    if (!countInitiliazed) {
-      counter
-        .getValue()
-        .then(() => setCountInitialized(true))
-        .catch((error) => console.error(error));
-    }
-
-    const beerCookie = localStorage.getItem(cookieName);
-    if (beerCookie) {
-      setHasValidCookie(isLessThanADay(beerCookie));
-    }
-  });
 
   return (
     <>
@@ -148,12 +134,12 @@ export default function Beer({
             aria-label='contained primary button group'
             size='large'
           >
-            {hasValidCookie ? (
-              <Button onClick={handleClickRevoke}>Doch nicht 😔</Button>
-            ) : (
-              <Button onClick={handleClickRegister}>
-                Ich bring' einen mit!
+            {isCookieExpired ? (
+              <Button onClick={() => setOpenConfirmationDialog(true)}>
+                Ich bring&apos; einen mit!
               </Button>
+            ) : (
+              <Button onClick={revokeDonation}>Doch nicht 😔</Button>
             )}
             <Tooltip
               arrow
@@ -178,7 +164,7 @@ export default function Beer({
             open={openConfirmationDialog}
             onClose={() => setOpenConfirmationDialog(false)}
             onClickCancel={() => setOpenConfirmationDialog(false)}
-            onClickConfirm={incrementCount}
+            onClickConfirm={registerDonation}
             setInput={setName}
           />
 
@@ -218,9 +204,9 @@ export default function Beer({
   );
 }
 
-function isLessThanADay(timestamp: string): boolean {
+function isOverADay(timestamp: string): boolean {
   const oneDayInMillis = 864e5;
-  return parseInt(timestamp) > Date.now() - oneDayInMillis;
+  return parseInt(timestamp) < Date.now() - oneDayInMillis;
 }
 
 function handleClose(
@@ -246,14 +232,10 @@ function getNextTrainingDay(): string {
 }
 
 export async function getStaticProps() {
-  const donors = new Donors(process.env.X_DONORS_URL);
-
   return {
     props: {
-      countapiNamespace: process.env.X_COUNT_API_NAMESPACE,
-      countapiKey: process.env.X_COUNT_API_KEY,
-      donorsUrl: process.env.X_DONORS_URL,
-      names: await donors.getNames(),
+      accessKeyId: process.env.X_ACCESS_KEY_ID!,
+      secretAccessKey: process.env.X_SECRET_ACCESS_KEY!,
     },
   };
 }
