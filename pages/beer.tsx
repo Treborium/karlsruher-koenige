@@ -1,4 +1,4 @@
-import { useState, useEffect, Dispatch, SetStateAction } from 'react';
+import { useState, useEffect, Dispatch, SetStateAction, useMemo } from 'react';
 import {
   Button,
   Grid,
@@ -47,7 +47,10 @@ export default function Beer({ accessKeyId, secretAccessKey }: BeerProps) {
   const [openToolip, setOpenTooltip] = useState(false);
   const [name, setName] = useState('');
   const [donors, setDonors] = useState<string[]>([]);
-  const donorsClient = new Donors(accessKeyId, secretAccessKey);
+  const donorsClient = useMemo(
+    () => new Donors(accessKeyId, secretAccessKey),
+    [accessKeyId, secretAccessKey]
+  );
 
   useEffect(() => {
     const cookieValue: string | null = localStorage.getItem(cookieKey);
