@@ -5,6 +5,7 @@ import {
   DeleteItemCommand,
 } from '@aws-sdk/client-dynamodb';
 import { Credentials } from 'aws-sdk';
+import { parseExpression } from 'cron-parser';
 export default class Donors {
   dynamodb: DynamoDBClient;
   tableName: string;
@@ -20,11 +21,17 @@ export default class Donors {
   }
 
   async addName(id: string, name: string) {
+    const interval = parseExpression('0 59 23 ? * MON,THU', {
+      tz: Intl.DateTimeFormat().resolvedOptions().timeZone,
+    });
+    const ttl = interval.next().toDate().valueOf() / 1000; // Convert from milli to seconds
+
     const command = new PutItemCommand({
       TableName: this.tableName,
       Item: {
         id: { S: id },
         name: { S: name },
+        ttl: { N: ttl.toString() },
       },
     });
 
