@@ -9,3 +9,7 @@
 - AWS S3
 - [DiceBear Avatars](https://avatars.dicebear.com/styles/micah)
 - [CountAPI](https://countapi.xyz/)
+
+## Related Projects
+
+- [Mail Deposit](https://github.com/Treborium/mail-deposit)
