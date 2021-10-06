@@ -1,5 +1,7 @@
 # Karlsruher Könige
 
+A mobile first webpage for the awesome gymnastics club of KIT 🤸‍♀️
+
 ## Tech Stack
 
 - React
