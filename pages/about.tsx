@@ -60,9 +60,14 @@ export default function About() {
           Wer sind wir?
         </Typography>
         <Typography variant='body1' className={classes.text}>
-          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-          nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
-          sed diam voluptua.
+          Egal ob Anfänger oder Fortgeschrittene, in diesem Kurs könnt ihr euch
+          je nach Lust und Laune ausprobieren und Teil eines tollen Teams
+          werden. Ihr werdet bei den ersten Gehversuchen an den Geräten, aber
+          auch bei eurer Wettkampfvorbereitung von uns unterstützt. Ziel des
+          Kurses ist eine verbesserte Körperbeherrschung und, falls erwünscht,
+          die Teilnahme an internen Wettkämpfen und Deutschen
+          Hochschulmeisterschaften, sei es als Turner oder als Fan. Die Freude
+          an unserer Sportart steht dabei selbstverständlich im Mittelpunkt.
         </Typography>
 
         <AccordionWithButton
